@@ -1,0 +1,200 @@
+---
+title: "Positive Affect and SM Use - SMASH Study"
+author: "Melissa Dreier"
+date: "2/23/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loaddata, include=FALSE}
+
+library(readr)
+setwd("C:/Users/HamiltonLabAdmin/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for analysis")
+data <- read_csv("final_SMASH_data_clean.csv") # main dataset
+
+
+```
+
+```{r setrparams, include=FALSE}
+
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+
+
+```
+
+```{r loadpackages, include=FALSE}
+# write function that installs and reads packages in reproducible format
+read_functions <- function (pkg) {
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg))
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+# make list of packages used
+packages <- c("brms","lme4","lmerTest", "nlme", "tidyverse", "sjstats")
+
+# apply function to read in above packages
+read_functions(packages)
+
+```
+
+
+```{r datacleaning, include=FALSE}
+
+## remove rows where "hour in study" = NA. This means this was outside of the passive monitoring period
+data <- data[-which(is.na(data$hour_in_study)),]
+
+
+## remove anyone who does not have SM data (in our study, these are iPhone users or people whose passive monitoring app did not work during the study period)
+data <- data %>%
+  filter(Any_SM == 1)
+
+
+## summarize data by day
+
+day <- data %>%
+  group_by(pid, day_in_study) %>%
+  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), PA = sum(PosEventRating_1_pm, na.rm = TRUE), NAf_am = sum(Mood_1_am, na.rm=TRUE), NAf_pm = sum(Mood_1_pm, na.rm=TRUE), Lonely = sum(Lonely_1_pm, na.rm = TRUE), PosEvent = mean(PosEventHow_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE)) %>%
+  mutate(NAf_sum = NAf_am + NAf_pm)
+
+day <- day %>%
+  group_by(pid) %>%
+  mutate(sm_average = mean(sum_sm, na.rm=TRUE), PA_average = mean(PA, na.rm=TRUE), count_average = mean(count_sm, na.rm=TRUE))
+
+day$PosEvent <- as.factor(day$PosEvent)
+
+
+
+### add dummy var of 
+
+
+```
+# Examine Variables
+```{r examinevars, include=TRUE, message=FALSE, warning=FALSE}
+
+hist(data$phone_applications_foreground_rapids_sumdurationtraditionalsm)
+hist(day$sum_sm)
+
+hist(data$PosEventRating_1_pm)
+hist(day$PA)
+
+```
+
+
+```{r bayesianparams, include=FALSE}
+
+#set weakly informative gaussian prior
+prior1 <- c(set_prior("normal(0, 10)", class = "b"),
+            set_prior("normal(0, 10)", class = "Intercept")
+)
+
+
+#SM use predicting negative affect
+NA_sm_bayes  <- brm(NAf_pm ~ count_sm + NAf_am + day_in_study + (1 | pid), prior = prior1,
+                family = "gaussian", data = data, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
+                chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+
+tidy_stan(NA_sm_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)    
+
+```
+
+Negative Affect
+```{r multilevelmodel, message=FALSE, warning=FALSE, include=TRUE}
+
+## Negative mood - sumduration
+
+NA_sm_sum <- lmer(Mood_1_pm ~ phone_applications_foreground_rapids_sumdurationsm + Mood_1_am + day_in_study + (1 | pid), data = data)
+
+summary(NA_sm_sum)
+
+
+## Negative mood - counts
+
+NA_sm_count <- lmer(Mood_1_pm ~ phone_applications_foreground_rapids_countsm + Mood_1_am + day_in_study + (1 | pid), data = data)
+
+summary(NA_sm_count)
+
+
+## make negative event variables factors
+data$NegEventHow_pm <- as.factor(data$NegEventHow_pm)
+
+## Negative event - sumduration
+
+NA_event_sum <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ NegEventRating_1_pm + Mood_1_am + day_in_study + (1 | pid), data = data)
+
+
+
+
+
+```
+
+
+```{r positiveaffect, include=TRUE, message=FALSE, warning=FALSE}
+
+
+
+### make these variables factors
+data$PosEventHow_pm <- as.factor(data$PosEventHow_pm)
+data$PosEventWho_pm <- as.factor(data$PosEventWho_pm)
+
+
+## Positive Event
+
+PA_sm <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ PosEventRating_1_pm*PosEventHow_pm + day_in_study + (1 | pid), data = data)
+
+summary(PA_sm)
+
+### note: effect is taking away when day in study is covaried
+
+
+## Positive Event counts
+
+PA_sm_count <- lmer(phone_applications_foreground_rapids_countsm ~ PosEventRating_1_pm*PosEventHow_pm + day_in_study + (1 | pid), data = data)
+
+summary(PA_sm_count)
+
+### note: does not change with day in study covaried
+
+
+
+
+## Positive Event - interpersonal component
+
+PA_sm_int <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ PosEventRating_1_pm*PosEventWho_pm + day_in_study + (1 | pid), data = data)
+
+summary(PA_sm_int)
+
+### note: effect stands with day covaried
+
+## Positive Event counts - interpersonal component
+
+PA_sm_count_int <- lmer(phone_applications_foreground_rapids_countsm ~ PosEventRating_1_pm*PosEventWho_pm + day_in_study + (1 | pid), data = data)
+
+summary(PA_sm_count_int)
+
+### note: nothing either way
+
+
+## Positive affect on SM duration
+
+PA_on_SM <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ SMPos_1_pm + day_in_study + (1 | pid), data = data)
+
+summary(PA_on_SM)
+
+## Positive affect on SM counts
+
+PA_on_SM_count <- lmer(phone_applications_foreground_rapids_countsm ~ SMPos_1_pm + day_in_study + (1 | pid), data = data)
+
+summary(PA_on_SM_count)
+'
+
+
+
+
+```
