@@ -1,5 +1,5 @@
 ---
-title: "Positive Affect and SM Use - SMASH Study"
+title: "Negative Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
 date: "2/23/2022"
 output: pdf_document
@@ -74,7 +74,7 @@ day <- day %>%
 day$sum_sm_lag <- Lag(day$sum_sm, +1) # sum duration SM
 day$count_sm_lag <- Lag(day$count_sm, +1) # SM count checks
 day$SM_Pos_lag <- Lag(day$SM_Pos, +1) # Pos Affect on SM
-day$SM_Neg_lab <- Lag(day$SM_Neg, +1) # Neg Affect on SM
+day$SM_Neg_lag <- Lag(day$SM_Neg, +1) # Neg Affect on SM
 
 
 ```
@@ -85,229 +85,134 @@ day$SM_Neg_lab <- Lag(day$SM_Neg, +1) # Neg Affect on SM
 
 ## Negative mood - sumduration
 
-NA_sm_sum <- lmer(Mood_1_pm ~ phone_applications_foreground_rapids_sumdurationsm + Mood_1_am + day_in_study + (1 | pid), data = data)
+NA_sm_sum <- lmer(NAf_pm ~ sum_sm + NAf_am + day_in_study + (1 + sum_sm | pid), data = day)
 
 summary(NA_sm_sum)
 
 
-## Negative mood - sumduration
-
-NA_sm_sum_test <- lmer(NAf_pm ~ sum_sm + NAf_am + day_in_study + (1 | pid), data = day)
-
-summary(NA_sm_sum_test)
-
-
 ## Negative mood - counts
 
-NA_sm_count <- lmer(Mood_1_pm ~ phone_applications_foreground_rapids_countsm + Mood_1_am + day_in_study + (1 | pid), data = data)
+NA_sm_count <- lmer(NAf_pm ~ count_sm + NAf_am + day_in_study + (1 + count_sm | pid), data = day)
 
 summary(NA_sm_count)
 
-
-NA_sm_count_test <- lmer(NAf_pm ~ count_sm + NAf_am + day_in_study + (1 | pid), data = day)
-
-summary(NA_sm_count_test) ##############Significant - # of SM checks predicts evening neg mood
-####################################Negative Events################################################
-
-## Negitive Event Rating * Where event occurred & minutes of SM 
-
-NA_sm <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ NegEventRating_1_pm*NegEventHow_pm + day_in_study + (1 | pid), data = data)
-
-summary(NA_sm)
-
-### collapsed across day
-NA_sm_test <- lmer(sum_sm ~ NegEvent*NegEventWhere + NA_average + day_in_study + (1 | pid), data = day)
-
-summary(NA_sm_test) # between person effect
+```
 
 
-## Negitive Event * Where event occurred & SM checks
-
-NA_sm_count <- lmer(phone_applications_foreground_rapids_countsm ~ NegEventRating_1_pm*NegEventHow_pm + day_in_study + (1 | pid), data = data)
-
-summary(NA_sm_count)
-
-### collapsed across day 
-
-NA_sm_count_test <- lmer(count_sm ~ NegEvent*NegEventWhere + NA_average + day_in_study + (1 | pid), data = day)
-
-summary(NA_sm_count_test)
+# ABCT Symposium Analyses
 
 
-## Negitive Event * Who event was with & minutes of SM
+## Negative Affect on SM - Within-Day Models
+```{r Negativeaffect2, include=TRUE, message=FALSE, warning=FALSE}
 
-NA_sm_int <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ NegEventRating_1_pm*NegEventWho_pm + day_in_study + (1 | pid), data = data)
+#--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
 
-summary(NA_sm_int)
+## Negative affect & minutes of SM
 
-### collapsed across day, within person only
+PA_on_SM_day <- lmer(sum_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 + SM_Pos | pid), data = day)
 
-NA_sm_int_test <- lmer(sum_sm ~ NegEvent*NegEventWho + NA_average + day_in_study + (1 | pid), data = day)
-
-summary(NA_sm_int_test)
-
+summary(PA_on_SM_day)
 
 
-## Negitive Event * Who event was with & SM checks
+## Negative affect & SM checks
 
-NA_sm_count_int <- lmer(phone_applications_foreground_rapids_countsm ~ NegEventRating_1_pm*NegEventWho_pm + day_in_study + (1 | pid), data = data)
+PA_on_SM_count_day <- lmer(count_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 + SM_Pos | pid), data = day)
 
-summary(NA_sm_count_int)
-
-
-### collapsed across day, wihtin person only
-
-NA_sm_count_int_test <- lmer(count_sm ~ NegEvent*NegEventWho + NA_average + day_in_study + (1 | pid), data = day)
-
-summary(NA_sm_count_int_test)
-
-####################################Negative Affect During SM Use################################################
+summary(PA_on_SM_count_day)
 
 
-## Negitive affect & minutes of SM
+#-------------------------------------SM & same day Negative affect------------------------------------------------------------------------------------#
 
-NA_on_SM <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ SMNeg_1_pm + day_in_study + (1 | pid), data = data)
+
+## Negative affect & minutes of SM
+
+PA_on_SM_day_reverse <- lmer(SM_Pos ~ sum_sm + sm_average + day_in_study + (1 + sum_sm | pid), data = day)
+
+summary(PA_on_SM_day_reverse)
+
+
+## Negative affect & SM checks
+
+PA_on_SM_count_day_reverse <- lmer(SM_Pos ~ count_sm + count_average + day_in_study + (1 + count_sm | pid), data = day)
+
+summary(PA_on_SM_count_day_reverse)
+
+```
+
+
+## Negative Affect on SM - Within-Day Models
+
+```{r negativeaffect, include=TRUE, message=FALSE, warning=FALSE}
+
+#--------------------------------------------Neg affect & same day SM------------------------------------------------------------------------------------#
+
+## Negative affect & minutes of SM
+
+NA_on_SM_day <- lmer(sum_sm ~ SM_Neg + NA_sm_average + day_in_study + (1 + SM_Neg | pid), data = day)
+
+summary(NA_on_SM_day)
+
+
+## Negative affect & SM checks
+
+NA_on_SM_count_day <- lmer(count_sm ~ SM_Neg + NA_sm_average + day_in_study + (1 + SM_Neg | pid), data = day)
+
+summary(NA_on_SM_count_day)
+
+
+#-------------------------------------SM & same day Negative affect------------------------------------------------------------------------------------#
+
+
+## Negative affect & minutes of SM
+
+NA_on_SM_day_reverse <- lmer(SM_Neg ~ sum_sm + sm_average + day_in_study + (1 + sum_sm | pid), data = day)
+
+summary(NA_on_SM_day_reverse)
+
+
+## Negative affect & SM checks
+
+NA_on_SM_count_day_reverse <- lmer(SM_Neg ~ count_sm + count_average + day_in_study + (1 + count_sm | pid), data = day)
+
+summary(NA_on_SM_count_day_reverse)
+
+```
+
+
+
+## Negative Affect on SM - Lagged Models
+```{r negativeaffect2, include=TRUE, message=FALSE, warning=FALSE}
+
+#--------------------------------------------Neg affect predicting next day SM------------------------------------------------------------------------------------#
+
+## Negative affect & minutes of SM
+
+NA_on_SM <- lmer(sum_sm ~ SM_Neg_lag + NA_sm_average + day_in_study + (1 + SM_Neg_lag | pid), data = day)
 
 summary(NA_on_SM)
 
 
-### collapsed across day, wihtin person only
+## Negative affect & SM checks
 
-NA_on_SM_test <- lmer(sum_sm ~ SM_Neg + NA_sm_average + day_in_study + (1 | pid), data = day)
-
-summary(NA_on_SM_test)
-
-
-## Negitive affect & SM checks
-
-NA_on_SM_count <- lmer(phone_applications_foreground_rapids_countsm ~ SMNeg_1_pm + day_in_study + (1 | pid), data = data)
+NA_on_SM_count <- lmer(count_sm ~ SM_Neg_lag + NA_sm_average + day_in_study + (1 + SM_Neg_lag | pid), data = day)
 
 summary(NA_on_SM_count)
 
 
+#-------------------------------------SM predicting next day Negative affect------------------------------------------------------------------------------------#
 
-### collapsed across day, wihtin person only
 
-NA_on_SM_count_test <- lmer(count_sm ~ SM_Neg + NA_sm_average + day_in_study + (1 | pid), data = day)
+## Negative affect & minutes of SM
 
-summary(NA_on_SM_count_test) 
+NA_on_SM_lag <- lmer(SM_Neg ~ sum_sm_lag + sm_average + day_in_study + (1 + sum_sm_lag | pid), data = day)
 
+summary(NA_on_SM_lag)
 
-```
 
+## Negative affect & SM checks
 
-Positive Affect
-```{r positiveaffect, include=TRUE, message=FALSE, warning=FALSE}
+NA_on_SM_count_lag <- lmer(SM_Neg ~ count_sm_lag + count_average + day_in_study + (1 + count_sm_lag | pid), data = day)
 
-####################################Positive Events################################################
-
-## Positive Event Rating * Where event occurred & minutes of SM 
-
-PA_sm <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ PosEventRating_1_pm*PosEventHow_pm + day_in_study + (1 | pid), data = data)
-
-summary(PA_sm)
-
-### collapsed across day
-PA_sm_test <- lmer(sum_sm ~ PosEvent*PosEventWhere + PA_average + day_in_study + (1 | pid), data = day)
-
-summary(PA_sm_test) # between person effect
-
-
-## Positive Event * Where event occurred & SM checks
-
-PA_sm_count <- lmer(phone_applications_foreground_rapids_countsm ~ PosEventRating_1_pm*PosEventHow_pm + day_in_study + (1 | pid), data = data)
-
-summary(PA_sm_count)
-
-### collapsed across day 
-
-PA_sm_count_test <- lmer(count_sm ~ PosEvent*PosEventWhere + PA_average + day_in_study + (1 | pid), data = day)
-
-summary(PA_sm_count_test) 
-
-
-## Positive Event * Who event was with & minutes of SM
-
-PA_sm_int <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ PosEventRating_1_pm*PosEventWho_pm + day_in_study + (1 | pid), data = data)
-
-summary(PA_sm_int)
-
-### collapsed across day, within person only
-
-PA_sm_int_test <- lmer(sum_sm ~ PosEvent*PosEventWho + PA_average + day_in_study + (1 | pid), data = day)
-
-summary(PA_sm_int_test)
-
-
-
-## Positive Event * Who event was with & SM checks
-
-PA_sm_count_int <- lmer(phone_applications_foreground_rapids_countsm ~ PosEventRating_1_pm*PosEventWho_pm + day_in_study + (1 | pid), data = data)
-
-summary(PA_sm_count_int) 
-
-
-### collapsed across day, wihtin person only
-
-PA_sm_count_int_test <- lmer(count_sm ~ PosEvent*PosEventWho + PA_average + day_in_study + (1 | pid), data = day)
-
-summary(PA_sm_count_int_test) ################################Significant - more SM if pos event is with peers or family, but the more positive this event is rated, the less they use SM
-
-####################################Positive Affect During SM Use################################################
-
-
-## Positive affect & minutes of SM
-
-PA_on_SM <- lmer(phone_applications_foreground_rapids_sumdurationsm ~ SMPos_1_pm + day_in_study + (1 | pid), data = data)
-
-summary(PA_on_SM)
-
-
-### collapsed across day, wihtin person only
-
-PA_on_SM_test <- lmer(sum_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 | pid), data = day)
-
-summary(PA_on_SM_test)
-
-
-## Positive affect & SM checks
-
-PA_on_SM_count <- lmer(phone_applications_foreground_rapids_countsm ~ SMPos_1_pm + day_in_study + (1 | pid), data = data)
-
-summary(PA_on_SM_count)
-
-
-
-### collapsed across day, wihtin person only
-
-PA_on_SM_count_test <- lmer(count_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 | pid), data = day)
-
-summary(PA_on_SM_count_test) ##################################### higher PA while on SM = more SM checks
-
-
-```
-
-Positive Affect Bayesian Analyses
-```{r, bayesianpos, include=TRUE, message=FALSE, warning=FALSE}
-
-
-#### Positive Event Rating * Where Pos Event took place, within person, day-level
-#PA_event_bayes  <- brm(count_sm ~ PosEvent*PosEventWhere + PA_average + day_in_study + (1 | pid), prior = prior1,
-                #family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                #chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-
-#tidy_stan(PA_event_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)    
-
-
-
-#### Positive Event Rating * Where Pos Event took place, within person, day-level
-#PA_SM_bayes  <- brm(count_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
-                #family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                #chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-
-#tidy_stan(PA_SM_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)    
-
-
-
+summary(NA_on_SM_count_lag)
 
 ```
