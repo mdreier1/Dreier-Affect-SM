@@ -60,7 +60,7 @@ data <- data %>%
 
 day <- data %>%
   group_by(pid, day_in_study) %>%
-  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = sum(Mood_1_am, na.rm=TRUE), NAf_pm = sum(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
+  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = sum(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
   mutate(NAf_sum = NAf_am + NAf_pm)
 
 ## add between-person variables (i.e., average of vars of interest for each participant, rather than participant by day)
@@ -79,20 +79,54 @@ day$SM_Neg_lag <- Lag(day$SM_Neg, +1) # Neg Affect on SM
 
 ```
 
+# Descriptive Statistics
+
+```{r descriptives, include=TRUE, warning=FALSE, message=FALSE}
+
+## Age
+
+mean(data$Age, na.rm=TRUE)
+sd(data$Age, na.rm=TRUE)
+
+## Race
+
+table(data$Race_012, data$pid)
+table(data$Gender, data$pid)
+
+## Days in Study
+
+# summarize max days in study
+Max_days <- data %>%
+  group_by(pid) %>%
+  summarise(Max_day = max(day_in_study, na.rm=TRUE))
+
+# get mean/sd day in study
+mean(Max_days$Max_day, na.rm=TRUE)
+sd(Max_days$Max_day, na.rm=TRUE)
+
+
+## Get Means/SDs of SM time spent
+
+sm_summary <- day %>%
+  group_by %>%
+  summarise(sm_time = (mean(sum_sm, na.rm=TRUE) * 60), sm_checks = mean(count_sm, na.rm=TRUE))
+
+```
+
 
 # Negative Mood - ABCT Poster
 ```{r multilevelmodel, message=FALSE, warning=FALSE, include=TRUE}
 
 ## Negative mood - sumduration
 
-NA_sm_sum <- lmer(NAf_pm ~ sum_sm + NAf_am + day_in_study + (1 + sum_sm | pid), data = day)
+NA_sm_sum <- lmer(NAf_pm ~ sum_sm + NAf_am + day_in_study + (1 | pid), data = day)
 
 summary(NA_sm_sum)
 
 
 ## Negative mood - counts
 
-NA_sm_count <- lmer(NAf_pm ~ count_sm + NAf_am + day_in_study + (1 + count_sm | pid), data = day)
+NA_sm_count <- lmer(NAf_pm ~ count_sm + NAf_am + day_in_study + (1 | pid), data = day)
 
 summary(NA_sm_count)
 
@@ -102,7 +136,7 @@ summary(NA_sm_count)
 # ABCT Symposium Analyses
 
 
-## Negative Affect on SM - Within-Day Models
+## Positive Affect on SM - Within-Day Models
 ```{r Negativeaffect2, include=TRUE, message=FALSE, warning=FALSE}
 
 #--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
