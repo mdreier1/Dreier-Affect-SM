@@ -1,7 +1,7 @@
 ---
 title: "Negative Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "3/1/2022"
+date: "3/4/2022"
 output: pdf_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r loaddata, include=FALSE}
 
 library(readr)
-setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for analysis")
+setwd("C:/Users/HamiltonLabAdmin/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for analysis")
 data <- read_csv("final_SMASH_data_clean.csv") # main dataset
 
 
@@ -119,16 +119,18 @@ sm_summary <- day %>%
 
 ## Negative mood - sumduration
 
-NA_sm_sum <- lmer(NAf_pm ~ sum_sm + NAf_am + day_in_study + (1 | pid), data = day)
+NA_sm_sum <- lmer(NAf_pm ~ sum_sm + NAf_am + sm_average + day_in_study + (1 | pid), data = day)
 
 summary(NA_sm_sum)
 
 
+
 ## Negative mood - counts
 
-NA_sm_count <- lmer(NAf_pm ~ count_sm + NAf_am + day_in_study + (1 | pid), data = day)
+NA_sm_count <- lmer(NAf_pm ~ count_sm + NAf_am + count_average + day_in_study + (1 | pid), data = day)
 
 summary(NA_sm_count)
+
 
 ```
 
@@ -137,7 +139,7 @@ summary(NA_sm_count)
 
 
 ## Positive Affect on SM - Within-Day Models
-```{r Negativeaffect2, include=TRUE, message=FALSE, warning=FALSE}
+```{r PosAffect1, include=TRUE, message=FALSE, warning=FALSE}
 
 #--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
 
@@ -170,6 +172,44 @@ summary(PA_on_SM_day_reverse)
 PA_on_SM_count_day_reverse <- lmer(SM_Pos ~ count_sm + count_average + day_in_study + (1 + count_sm | pid), data = day)
 
 summary(PA_on_SM_count_day_reverse)
+
+```
+
+
+## Positive Affect on SM - Lagged Models
+```{r PosAffect2, include=TRUE, message=FALSE, warning=FALSE}
+
+#--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
+
+## Negative affect & minutes of SM
+
+PA_on_SM_day_lag <- lmer(sum_sm_lag ~ SM_Pos + PA_sm_average + day_in_study + (1 + SM_Pos | pid), data = day)
+
+summary(PA_on_SM_day_lag)
+
+
+## Negative affect & SM checks
+
+PA_on_SM_count_day_lag <- lmer(count_sm_lag ~ SM_Pos + PA_sm_average + day_in_study + (1 + SM_Pos | pid), data = day)
+
+summary(PA_on_SM_count_day_lag)
+
+
+#-------------------------------------SM & same day Negative affect------------------------------------------------------------------------------------#
+
+
+## Negative affect & minutes of SM
+
+PA_on_SM_day_reverse_lag <- lmer(SM_Pos_lag ~ sum_sm + sm_average + day_in_study + (1 + sum_sm | pid), data = day)
+
+summary(PA_on_SM_day_reverse_lag)
+
+
+## Negative affect & SM checks
+
+PA_on_SM_count_day_reverse_lag <- lmer(SM_Pos_lag ~ count_sm + count_average + day_in_study + (1 + count_sm | pid), data = day)
+
+summary(PA_on_SM_count_day_reverse_lag)
 
 ```
 
@@ -221,14 +261,14 @@ summary(NA_on_SM_count_day_reverse)
 
 ## Negative affect & minutes of SM
 
-NA_on_SM <- lmer(sum_sm ~ SM_Neg_lag + NA_sm_average + day_in_study + (1 + SM_Neg_lag | pid), data = day)
+NA_on_SM <- lmer(sum_sm_lag ~ SM_Neg + NA_sm_average + day_in_study + (1 + SM_Neg | pid), data = day)
 
 summary(NA_on_SM)
 
 
 ## Negative affect & SM checks
 
-NA_on_SM_count <- lmer(count_sm ~ SM_Neg_lag + NA_sm_average + day_in_study + (1 + SM_Neg_lag | pid), data = day)
+NA_on_SM_count <- lmer(count_sm_lag ~ SM_Neg + NA_sm_average + day_in_study + (1 + SM_Neg | pid), data = day)
 
 summary(NA_on_SM_count)
 
@@ -236,16 +276,16 @@ summary(NA_on_SM_count)
 #-------------------------------------SM predicting next day Negative affect------------------------------------------------------------------------------------#
 
 
-## Negative affect & minutes of SM
+## SM minutes on Negative Affect
 
-NA_on_SM_lag <- lmer(SM_Neg ~ sum_sm_lag + sm_average + day_in_study + (1 + sum_sm_lag | pid), data = day)
+NA_on_SM_lag <- lmer(SM_Neg_lag ~ sum_sm + sm_average + day_in_study + (1 + sum_sm | pid), data = day)
 
 summary(NA_on_SM_lag)
 
 
 ## Negative affect & SM checks
 
-NA_on_SM_count_lag <- lmer(SM_Neg ~ count_sm_lag + count_average + day_in_study + (1 + count_sm_lag | pid), data = day)
+NA_on_SM_count_lag <- lmer(SM_Neg_lag ~ count_sm + count_average + day_in_study + (1 + count_sm | pid), data = day)
 
 summary(NA_on_SM_count_lag)
 
