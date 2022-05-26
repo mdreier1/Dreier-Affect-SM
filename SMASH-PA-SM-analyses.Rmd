@@ -163,7 +163,7 @@ tidy_stan(NA_sm_count_bayes, prob = 0.95, typical = "mean", type = "fixed", digi
 
 ## Positive affect & minutes of SM
 
-PA_on_SM_day_bayes  <- brm(sum_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
+PA_on_SM_day_bayes  <- brm(sum_sm ~ SM_Pos_p + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -173,7 +173,7 @@ tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", dig
 
 ## Positive affect & SM checks
 
-PA_on_SM_count_day_bayes  <- brm(count_sm ~ SM_Pos + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
+PA_on_SM_count_day_bayes  <- brm(count_sm ~ SM_Pos_p + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(PA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -189,7 +189,7 @@ tidy_stan(PA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed
 
 ## Negative affect & minutes of SM
 
-NA_on_SM_day_bayes  <- brm(sum_sm ~ SM_Neg + NA_sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_on_SM_day_bayes  <- brm(sum_sm ~ SM_Neg_p + NA_sm_average + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -199,7 +199,7 @@ tidy_stan(NA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", dig
 
 ## Negative affect & SM checks
 
-NA_on_SM_count_day_bayes  <- brm(count_sm ~ SM_Neg + NA_sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_on_SM_count_day_bayes  <- brm(count_sm ~ SM_Neg_p + NA_sm_average + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
