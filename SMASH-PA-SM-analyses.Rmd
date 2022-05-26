@@ -37,7 +37,7 @@ read_functions <- function (pkg) {
 }
 
 # make list of packages used
-packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMA")
+packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools")
 
 # apply function to read in above packages
 read_functions(packages)
@@ -82,6 +82,15 @@ prior1 <- c(set_prior("normal(0, 10)", class = "b"),
             set_prior("normal(0, 10)", class = "Intercept")
 )
 
+
+## person-centered means
+day$sum_sm_p <- pcenter(day$pid, day$sum_sm) # Sum SM
+
+day$count_sm_p <- pcenter(day$pid, day$count_sm) # Count SM
+
+day$SM_Pos_p <- pcenter(day$pid, day$SM_Pos) # SM Positive Affect
+
+day$SM_Neg_p <- pcenter(day$pid, day$SM_Neg) # SM Negative Affect
 ```
 
 # Descriptive Statistics
@@ -125,7 +134,7 @@ sm_summary <- day %>%
 
 ## Negative mood - sumduration
 
-NA_sm_sum_bayes  <- brm(NAf_pm ~ sum_sm + NAf_am + sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_sm_sum_bayes  <- brm(NAf_pm ~ sum_sm_p + NAf_am + sm_average + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_sm_sum_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -134,7 +143,7 @@ tidy_stan(NA_sm_sum_bayes, prob = 0.95, typical = "mean", type = "fixed", digits
 
 ## Negative mood - counts
 
-NA_sm_count_bayes  <- brm(NAf_pm ~ count_sm + NAf_am + sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_sm_count_bayes  <- brm(NAf_pm ~ count_sm_p + NAf_am + sm_average + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_sm_count_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
