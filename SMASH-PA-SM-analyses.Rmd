@@ -1,7 +1,7 @@
 ---
 title: "Negative Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "3/4/2022"
+date: "6/2/2022"
 output: pdf_document
 ---
 
@@ -84,13 +84,31 @@ prior1 <- c(set_prior("normal(0, 10)", class = "b"),
 
 
 ## person-centered means
-day$sum_sm_p <- pcenter(day$pid, day$sum_sm) # Sum SM
 
-day$count_sm_p <- pcenter(day$pid, day$count_sm) # Count SM
 
-day$SM_Pos_p <- pcenter(day$pid, day$SM_Pos) # SM Positive Affect
+day$sum_sm_p_c <- pmean(day$pid, day$sum_sm) # Sum SM overall person-centered mean
+day$sum_sm_p <- (day$sum_sm - day$sum_sm_p_c) # Sum SM daily person-centered var
 
-day$SM_Neg_p <- pcenter(day$pid, day$SM_Neg) # SM Negative Affect
+
+day$count_sm_p_c <- pmean(day$pid, day$count_sm) # Count SM overall person-centered mean
+day$count_sm_p <- (day$count_sm - day$count_sm_p_c) # Count SM daily person-centered var
+
+day$SM_Pos_p_c <- pmean(day$pid, day$SM_Pos) # SM Positive Affect overall person-centered mean
+day$SM_Pos_p <- (day$SM_Pos - day$SM_Pos_p_c) # SM Positive Affect daily person-centered var
+
+
+day$SM_Neg_p_c <- pmean(day$pid, day$SM_Neg) # SM Negative Affect overall person-centered mean
+day$SM_Neg_p <- (day$SM_Neg - day$SM_Neg_p_c) # SM Negative Affect daily person-centered var
+
+
+day$NAf_am_p_c <- pmean(day$pid, day$NAf_am) # Morning negative affect overall mean
+day$NAf_am_p <- (day$NAf_am - day$NAf_am_p_c) # Morning negative Affect daily person-centered var
+
+day$NAf_pm_p_c <- pmean(day$pid, day$NAf_pm) # Evening negative affect overall mean
+day$NAf_pm_p <- (day$NAf_pm - day$NAf_pm_p_c) # Evening negative Affect daily person-centered var
+
+
+
 ```
 
 # Descriptive Statistics
@@ -134,7 +152,7 @@ sm_summary <- day %>%
 
 ## Negative mood - sumduration
 
-NA_sm_sum_bayes  <- brm(NAf_pm ~ sum_sm_p + NAf_am + sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_sm_sum_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -143,7 +161,7 @@ tidy_stan(NA_sm_sum_bayes, prob = 0.95, typical = "mean", type = "fixed", digits
 
 ## Negative mood - counts
 
-NA_sm_count_bayes  <- brm(NAf_pm ~ count_sm_p + NAf_am + sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_sm_count_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -163,7 +181,7 @@ tidy_stan(NA_sm_count_bayes, prob = 0.95, typical = "mean", type = "fixed", digi
 
 ## Positive affect & minutes of SM
 
-PA_on_SM_day_bayes  <- brm(sum_sm ~ SM_Pos_p + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
+PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -173,7 +191,7 @@ tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", dig
 
 ## Positive affect & SM checks
 
-PA_on_SM_count_day_bayes  <- brm(count_sm ~ SM_Pos_p + PA_sm_average + day_in_study + (1 | pid), prior = prior1,
+PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(PA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -189,7 +207,7 @@ tidy_stan(PA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed
 
 ## Negative affect & minutes of SM
 
-NA_on_SM_day_bayes  <- brm(sum_sm ~ SM_Neg_p + NA_sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
@@ -199,7 +217,7 @@ tidy_stan(NA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", dig
 
 ## Negative affect & SM checks
 
-NA_on_SM_count_day_bayes  <- brm(count_sm ~ SM_Neg_p + NA_sm_average + day_in_study + (1 | pid), prior = prior1,
+NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(NA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
