@@ -182,7 +182,6 @@ standard_error(NA_sm_count_bayes)
 PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
 
 model_parameters(PA_on_SM_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_day_bayes)
