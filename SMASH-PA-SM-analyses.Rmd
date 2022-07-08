@@ -1,7 +1,7 @@
 ---
 title: "Negative Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "6/2/2022"
+date: "7/8/2022"
 output: pdf_document
 ---
 
@@ -11,10 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r loaddata, include=FALSE}
 
-library(readr)
-setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for analysis")
-data <- read_csv("final_SMASH_data_clean.csv") # main dataset
-
+#library(readr)
+setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
+data <- read.csv("final_SMASH_data_clean.csv") # main dataset
 
 ```
 
@@ -37,7 +36,7 @@ read_functions <- function (pkg) {
 }
 
 # make list of packages used
-packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools")
+packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools", "parameters")
 
 # apply function to read in above packages
 read_functions(packages)
@@ -151,21 +150,20 @@ sm_summary <- day %>%
 ```{r multilevelmodel, message=FALSE, warning=FALSE, include=TRUE}
 
 ## Negative mood - sumduration
-
 NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-tidy_stan(NA_sm_sum_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
 
-
+model_parameters(NA_sm_sum_bayes, centrality = "mean")
+standard_error(NA_sm_sum_bayes)
 
 ## Negative mood - counts
 
 NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-tidy_stan(NA_sm_count_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
-
+model_parameters(NA_sm_count_bayes, centrality = "mean")
+standard_error(NA_sm_count_bayes)
 
 
 ```
@@ -186,7 +184,8 @@ PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
 
-
+model_parameters(PA_on_SM_day_bayes, centrality = "mean")
+standard_error(PA_on_SM_day_bayes)
 
 
 ## Positive affect & SM checks
@@ -194,13 +193,16 @@ tidy_stan(PA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", dig
 PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-tidy_stan(PA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
+
+
+model_parameters(PA_on_SM_count_day_bayes, centrality = "mean")
+standard_error(PA_on_SM_count_day_bayes)
 
 
 
 ```
 
-## Negative Affect on SM - Within-Day Models Bayesian
+## Negative Affect on SM 
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
 #--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
@@ -210,8 +212,9 @@ tidy_stan(PA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed
 NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-tidy_stan(NA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
 
+model_parameters(NA_on_SM_day_bayes, centrality = "mean")
+standard_error(NA_on_SM_day_bayes)
 
 
 
@@ -220,8 +223,9 @@ tidy_stan(NA_on_SM_day_bayes, prob = 0.95, typical = "mean", type = "fixed", dig
 NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
                     chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-tidy_stan(NA_on_SM_count_day_bayes, prob = 0.95, typical = "mean", type = "fixed", digits = 3)
 
+model_parameters(NA_on_SM_count_day_bayes, centrality = "mean")
+standard_error(NA_on_SM_count_day_bayes)
 
 
 ```
