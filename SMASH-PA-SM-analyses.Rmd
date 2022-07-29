@@ -1,7 +1,7 @@
 ---
 title: "Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "7/8/2022"
+date: "7/20/2022"
 output: pdf_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r loaddata, include=FALSE}
 
 #library(readr)
-setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
+setwd("C:/Users/HamiltonLabAdmin/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
 data <- read.csv("final_SMASH_data_clean.csv") # main dataset
 
 
@@ -120,13 +120,16 @@ day$NAf_pm_p <- (day$NAf_pm - day$NAf_pm_p_c) # Evening negative Affect daily pe
 
 ## Age
 
-mean(data$Age, na.rm=TRUE)
-sd(data$Age, na.rm=TRUE)
+wide <- data[which(data$day_in_study==1 & data$hour_in_study==1),] # create dataset with 1 row/participant for demographics
+
+
+mean(wide$Age, na.rm=TRUE)
+sd(wide$Age, na.rm=TRUE)
 
 ## Race
 
-table(data$Race_012, data$pid)
-table(data$Gender, data$pid)
+table(wide$Race_012)
+table(wide$Gender)
 
 ## Days in Study
 
@@ -153,6 +156,20 @@ sm_summary <- day %>%
 # Negative Mood - Bayesian Framework
 ```{r multilevelmodel, message=FALSE, warning=FALSE, include=TRUE}
 
+###check utility of random slopes
+model1 <- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), data = day)
+model2 <- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (sum_sm_p | pid), data = day)
+
+anova(model1, model2)
+
+
+
+model3 <- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), data = day)
+model4 <- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (count_sm_p | pid), data = day)
+
+anova(model3, model4)
+
+
 ## Negative mood - sumduration
 NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1,
                     family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
@@ -160,6 +177,8 @@ NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_stu
 
 model_parameters(NA_sm_sum_bayes, centrality = "mean")
 standard_error(NA_sm_sum_bayes)
+
+
 
 ## Negative mood - counts
 
@@ -178,6 +197,20 @@ standard_error(NA_sm_count_bayes)
 
 ## Positive Affect on SM - Within-Day Models Bayesian
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
+
+###check utility of random slopes
+model1 <- lmer(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), data = day)
+model2 <- lmer(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid), data = day)
+
+anova(model1, model2)
+
+
+model3 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), data = day)
+model4 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid), data = day)
+
+anova(model3, model4)
+
+
 
 #--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
 
@@ -208,7 +241,21 @@ standard_error(PA_on_SM_count_day_bayes)
 ## Negative Affect on SM 
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
-#--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
+###check utility of random slopes
+model1 <- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
+model2 <- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
+
+anova(model1, model2)
+
+
+model3 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
+model4 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
+
+anova(model3, model4)
+
+
+
+#--------------------------------------------Neg affect & same day SM------------------------------------------------------------------------------------#
 
 ## Negative affect & minutes of SM
 
