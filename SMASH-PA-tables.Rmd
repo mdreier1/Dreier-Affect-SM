@@ -1,0 +1,36 @@
+---
+title: "SMASH Affect Study Tables"
+author: "Melissa Dreier"
+date: "7/13/2022"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loaddata, include=FALSE}
+
+#library(readr)
+setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
+data <- read.csv("final_SMASH_data_clean.csv") # main dataset
+
+```
+
+
+```{r loadpackages, include=FALSE}
+# write function that installs and reads packages in reproducible format
+read_functions <- function (pkg) {
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg))
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+# make list of packages used
+packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools", "parameters")
+
+# apply function to read in above packages
+read_functions(packages)
+
+```
