@@ -1,7 +1,7 @@
 ---
 title: "SMASH Affect Study Tables"
 author: "Melissa Dreier"
-date: "7/13/2022"
+date: "8/19/2022"
 output: word_document
 ---
 
@@ -28,9 +28,194 @@ read_functions <- function (pkg) {
 }
 
 # make list of packages used
-packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools", "parameters")
+packages <- c("tidyverse", "flextable", "psych", "irr")
 
 # apply function to read in above packages
 read_functions(packages)
 
 ```
+
+
+## Demographics
+
+### cleaning data
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+
+## remove rows where "hour in study" = NA. This means this was outside of the passive monitoring period
+data <- data[-which(is.na(data$hour_in_study)),]
+
+
+## remove anyone who does not have SM data (in our study, these are iPhone users or people whose passive monitoring app did not work during the study period)
+data <- data %>%
+  filter(Any_SM == 1)
+
+
+## create dataset summarized by day
+
+day <- data %>%
+  group_by(pid, day_in_study) %>%
+  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = mean(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
+  mutate(NAf_sum = NAf_am + NAf_pm)
+
+## add between-person variables (i.e., average of vars of interest for each participant, rather than participant by day)
+day <- day %>%
+  group_by(pid) %>%
+  mutate(sm_average = mean(sum_sm, na.rm=TRUE), PA_sm_average = mean(SM_Pos, na.rm=TRUE), NA_sm_average = mean(SM_Neg, na.rm=TRUE), count_average = mean(count_sm, na.rm=TRUE))
+
+
+
+
+
+wide <- data[which(data$day_in_study==1 & data$hour_in_study==1),] # create dataset with 1 row/participant for demographics
+
+
+# summarize max days in study
+Max_days <- data %>%
+  group_by(pid) %>%
+  summarise(Max_day = max(day_in_study, na.rm=TRUE))
+
+
+## Get Means/SDs of SM time spent
+
+sm_summary <- day %>%
+  group_by(pid) %>%
+  summarise(sm_time = (mean(sum_sm, na.rm=TRUE) * 60), sm_checks = mean(count_sm, na.rm=TRUE))
+
+
+
+### check numbers for EMA surveys
+
+surveys <- day %>%
+  group_by(pid) %>%
+  summarise(morning_mood = mean(NAf_am, na.rm=TRUE), evening_mood = mean(NAf_pm, na.rm=TRUE), pos = mean(SM_Pos, na.rm=TRUE), neg = mean(SM_Neg, na.rm=TRUE))
+
+
+
+##icc datasets - write function to format data correction
+
+icc <- function(df, df2, var1, var2) {
+  
+df <- df2 %>% select("pid", var2, var1)
+df <- df %>% spread(var1, var2)
+df <- df %>% 
+  ungroup() %>%
+  select(-"pid")
+df <- as.data.frame(t(df))
+df <- df %>% mutate_all(~ifelse(is.nan(.), NA, .))
+return(df)
+  
+  
+}
+
+## apply function
+
+morning_mood <- icc("morning_mood", day, "day_in_study", "NAf_am")
+evening_mood <- icc("evening_mood", day, "day_in_study", "NAf_pm")
+SM_pos <- icc("SM_pos", day, "day_in_study", "SM_Pos")
+SM_neg <- icc("SM_neg", day, "day_in_study", "SM_Neg")
+SM_time <- icc("SM_time", data, "hour_in_study", "phone_applications_foreground_rapids_sumdurationsm")
+SM_count <- icc("SM_time", data, "hour_in_study", "phone_applications_foreground_rapids_countsm")
+
+
+### run ICCs
+morning <- ICC(morning_mood)
+evening <- ICC(evening_mood)
+pos <- ICC(SM_pos)
+neg <- ICC(SM_neg)
+time <- ICC(SM_time)
+count <- ICC(SM_count)
+
+
+```
+
+
+*Table 1* Sample Demographics
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+demog = data.frame(
+  
+  Measure = c("Age, M (SD)", "Race", "White", "Black/African American", "Asian", "Ethnicity", "Hispanic/Latine", "Non-Hispanic/Latine", "Sex", "Male", "Female", "Gender", "Boys", "Girls", "Non-binary/third gender", "Transgender", "Sexual Orientation", "Heterosexual/Straight", "Bisexual", "Queer", "Bi-curious", "I don't know", "Socioeconomic Status - Society, M (SD; Range)", "Socioeconomic Status - School, M (SD; Range)"),
+  
+  N = c(paste(round(mean(wide$Age, na.rm=TRUE), 2), "(",round(sd(wide$Age, na.rm = TRUE), 2),")", sep=""), "", paste(n_distinct(which(wide$Race_012==0)), "(",round(n_distinct(which(wide$Race_012==0)) / nrow(wide) * 100, 2),"%)", sep=""),  paste(n_distinct(which(wide$Race_012==1)), "(",round(n_distinct(which(wide$Race_012==1)) / nrow(wide) * 100, 2),"%)", sep=""), paste(n_distinct(which(wide$Race_012==2)), "(",round(n_distinct(which(wide$Race_012==2)) / nrow(wide) * 100, 2),"%)", sep=""), "",
+paste(n_distinct(which(wide$Latino01==1)), "(",round(n_distinct(which(wide$Latino01==1)) / nrow(wide) * 100, 2),"%)", sep=""), paste(n_distinct(which(wide$Latino01==0)), "(",round(n_distinct(which(wide$Latino01==0)) / nrow(wide) * 100, 2),"%)", sep=""), "", 
+paste(n_distinct(which(wide$GenderBirth==1)), "(",round(n_distinct(which(wide$GenderBirth==1)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$GenderBirth==0)), "(",round(n_distinct(which(wide$GenderBirth==0)) / nrow(wide) * 100, 2),"%)", sep=""), "",
+paste(n_distinct(which(wide$Gender==1)), "(",round(n_distinct(which(wide$Gender==1)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$Gender==0)), "(",round(n_distinct(which(wide$Gender==0)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$Gender==2)), "(",round(n_distinct(which(wide$Gender==2)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$Transgender==1)), "(",round(n_distinct(which(wide$Transgender==1)) / nrow(wide) * 100, 2),"%)", sep=""), "",
+paste(n_distinct(which(wide$SexOrientation==0)), "(",round(n_distinct(which(wide$SexOrientation==0)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$SexOrientation==2)), "(",round(n_distinct(which(wide$SexOrientation==2)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$SexOrientation==4)), "(",round(n_distinct(which(wide$SexOrientation==4)) / nrow(wide) * 100, 2),"%)", sep=""),
+paste(n_distinct(which(wide$SexOrientation_5_TEXT=="Bi-curious")), "(",round(n_distinct(which(wide$SexOrientation_5_TEXT=="Bi-curious")) / nrow(wide) * 100, 2),"%)", sep=""), paste(n_distinct(which(wide$SexOrientation_5_TEXT=="I don't know")), "(", round(n_distinct(which(wide$SexOrientation_5_TEXT=="I don't know")) / nrow(wide) * 100, 2),"%)", sep=""), paste(round(mean(wide$SES_Society, na.rm=TRUE), 2), "(", round(sd(wide$SES_Society, na.rm = TRUE), 2), ";", min(wide$SES_Society, na.rm = TRUE), "-", max(wide$SES_Society, na.rm = TRUE), ")", sep=""), paste(round(mean(wide$SES_School, na.rm=TRUE), 2), "(", round(sd(wide$SES_School, na.rm = TRUE), 2), ";", min(wide$SES_School, na.rm = TRUE), "-", max(wide$SES_School, na.rm = TRUE), ")", sep="")
+
+
+)
+  
+  
+  
+  
+)
+
+colnames(demog) <- c(" ", "N (%)")
+
+
+
+
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+
+flextable(demog)
+
+
+```
+
+
+*Table 2* Measure Descriptives
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+
+
+measures = data.frame(
+
+
+Measure = c("Daily Measures", "Morning Negative Mood", "Evening Negative Mood", "Positive Affect on Social Media", "Negative Affect on Social Media", "Continuous Measures", "Time Spent on Social Media (hours)", "Social Media Checks"),
+
+N = c("", paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$morning_mood)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$evening_mood)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$pos)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$neg)))), "", paste(n_distinct(sm_summary)-n_distinct(which(is.na(sm_summary$sm_time)))), paste(n_distinct(sm_summary)-n_distinct(which(is.na(sm_summary$sm_checks))))),
+
+n = c("", paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_am)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_pm)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Pos)))), paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Neg)))), "", paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_sumdurationsm)))), paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_countsm))))),
+
+
+M = c("", round(mean(day$NAf_am, na.rm=TRUE), 2), round(mean(day$NAf_pm, na.rm=TRUE), 2), round(mean(day$SM_Pos, na.rm=TRUE), 2), round(mean(day$SM_Neg, na.rm=TRUE), 2), "", round(mean(day$sum_sm, na.rm=TRUE) / 60, 2), round(mean(day$count_sm, na.rm=TRUE), 2)),
+
+SD = c("", round(sd(day$NAf_am, na.rm=TRUE), 2), round(sd(day$NAf_pm, na.rm=TRUE), 2), round(sd(day$SM_Pos, na.rm=TRUE), 2), round(sd(day$SM_Neg, na.rm=TRUE), 2), "", round(sd(day$sum_sm, na.rm=TRUE) / 60, 2), round(sd(day$count_sm, na.rm=TRUE), 2)),
+
+Range = c("", paste(round(min(day$NAf_am, na.rm=TRUE), 2), "-", round(max(day$NAf_am, na.rm=TRUE), 2), sep=""), paste(round(min(day$NAf_pm, na.rm=TRUE), 2), "-", round(max(day$NAf_pm, na.rm=TRUE), 2), sep=""), paste(round(min(day$SM_Pos, na.rm=TRUE), 2), "-", round(max(day$SM_Pos, na.rm=TRUE), 2), sep=""), paste(round(min(day$SM_Neg, na.rm=TRUE), 2), "-", round(max(day$SM_Neg, na.rm=TRUE), 2), sep=""), "", paste(round(min(day$sum_sm, na.rm=TRUE) / 60, 2), "-", round(max(day$sum_sm, na.rm=TRUE) / 60, 2), sep=""), paste(round(min(day$count_sm, na.rm=TRUE), 2), "-", round(max(day$count_sm, na.rm=TRUE), 2), sep="")),
+
+Possible_range = c("", "0-100", "0-100", "0-100", "0-100", "", "--", "--"),
+
+ICC = c("", round(morning$results$ICC[3], 2), round(evening$results$ICC[3], 2), round(pos$results$ICC[3], 2), round(neg$results$ICC[3], 2), "", round(time$results$ICC[3], 2), round(count$results$ICC[3], 2))
+
+
+  
+)
+
+colnames(measures) <- c(" ", "N", "n", "M", "SD", "Range", "Possible Range", "ICC")
+
+
+
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+
+flextable(measures)
+
+
+```
+
+

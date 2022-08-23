@@ -1,7 +1,7 @@
 ---
 title: "Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "7/20/2022"
+date: "08/19/2022"
 output: pdf_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r loaddata, include=FALSE}
 
 #library(readr)
-setwd("C:/Users/HamiltonLabAdmin/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
+setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
 data <- read.csv("final_SMASH_data_clean.csv") # main dataset
 
 
@@ -60,21 +60,13 @@ data <- data %>%
 
 day <- data %>%
   group_by(pid, day_in_study) %>%
-  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = sum(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
+  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = mean(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
   mutate(NAf_sum = NAf_am + NAf_pm)
 
 ## add between-person variables (i.e., average of vars of interest for each participant, rather than participant by day)
 day <- day %>%
   group_by(pid) %>%
   mutate(sm_average = mean(sum_sm, na.rm=TRUE), PA_sm_average = mean(SM_Pos, na.rm=TRUE), NA_sm_average = mean(SM_Neg, na.rm=TRUE), count_average = mean(count_sm, na.rm=TRUE))
-
-
-## add time lagged variables
-
-day$sum_sm_lag <- Lag(day$sum_sm, +1) # sum duration SM
-day$count_sm_lag <- Lag(day$count_sm, +1) # SM count checks
-day$SM_Pos_lag <- Lag(day$SM_Pos, +1) # Pos Affect on SM
-day$SM_Neg_lag <- Lag(day$SM_Neg, +1) # Neg Affect on SM
 
 
 #set weakly informative gaussian prior####
@@ -154,7 +146,7 @@ sm_summary <- day %>%
 
 
 # Negative Mood - Bayesian Framework
-```{r multilevelmodel, message=FALSE, warning=FALSE, include=TRUE}
+```{r, message=FALSE, warning=FALSE, include=TRUE}
 
 ###check utility of random slopes
 model1 <- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), data = day)
@@ -171,9 +163,9 @@ anova(model3, model4)
 
 
 ## Negative mood - sumduration
-NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1,
-                    family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                    chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day) #,
+                   # family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
+                   # chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
 
 model_parameters(NA_sm_sum_bayes, centrality = "mean")
 standard_error(NA_sm_sum_bayes)
@@ -211,7 +203,6 @@ model4 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | p
 anova(model3, model4)
 
 
-
 #--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
 
 ## Positive affect & minutes of SM
@@ -247,12 +238,14 @@ model2 <- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid
 
 anova(model1, model2)
 
+summary(model1)
 
 model3 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
 model4 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
 
 anova(model3, model4)
 
+summary(model3)
 
 
 #--------------------------------------------Neg affect & same day SM------------------------------------------------------------------------------------#
