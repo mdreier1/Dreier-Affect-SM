@@ -25,6 +25,7 @@ r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
 
 .libPaths("C:/Users/Missy Dreier/Documents") # ensure packages install in the correct place
+
 ```
 
 ```{r loadpackages, include=FALSE}
