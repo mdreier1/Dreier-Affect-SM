@@ -25,4 +25,4 @@
 
 ### SMASH-PA-tables.Rmd
 
-+ Using this document, I use the "flextable" package to create the tables included in my paper (https://cran.r-project.org/web/packages/flextable/index.html) 
++ Using this document, I use the "flextable" package to create Tables 1 & 2 included in my paper (https://cran.r-project.org/web/packages/flextable/index.html) 
