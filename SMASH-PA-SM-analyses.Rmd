@@ -1,7 +1,7 @@
 ---
 title: "Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "08/19/2022"
+date: "08/24/2022"
 output: pdf_document
 ---
 
@@ -24,7 +24,7 @@ r = getOption("repos")
 r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
 
-
+.libPaths("C:/Users/Missy Dreier/Documents") # ensure packages install in the correct place
 ```
 
 ```{r loadpackages, include=FALSE}
@@ -105,23 +105,9 @@ day$NAf_pm_p <- (day$NAf_pm - day$NAf_pm_p_c) # Evening negative Affect daily pe
 
 # Descriptive Statistics
 
-```{r descriptives, include=TRUE, warning=FALSE, message=FALSE}
+```{r descriptives, include=TRUE, message=FALSE, warning = FALSE}
 
 
-
-
-## Age
-
-wide <- data[which(data$day_in_study==1 & data$hour_in_study==1),] # create dataset with 1 row/participant for demographics
-
-
-mean(wide$Age, na.rm=TRUE)
-sd(wide$Age, na.rm=TRUE)
-
-## Race
-
-table(wide$Race_012)
-table(wide$Gender)
 
 ## Days in Study
 
@@ -135,17 +121,12 @@ mean(Max_days$Max_day, na.rm=TRUE)
 sd(Max_days$Max_day, na.rm=TRUE)
 
 
-## Get Means/SDs of SM time spent
-
-sm_summary <- day %>%
-  group_by %>%
-  summarise(sm_time = (mean(sum_sm, na.rm=TRUE) * 60), sm_checks = mean(count_sm, na.rm=TRUE))
 
 ```
 
 
 
-# Negative Mood - Bayesian Framework
+# Models Prediciting Evening Negative Mood 
 ```{r, message=FALSE, warning=FALSE, include=TRUE}
 
 ###check utility of random slopes
@@ -161,12 +142,10 @@ model4 <- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + 
 
 anova(model3, model4)
 
+#---------------------------------------------Bayesian multilevel models---------------------------------------#
 
 ## Negative mood - sumduration
-NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day) #,
-                   # family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                   # chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
-
+NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 model_parameters(NA_sm_sum_bayes, centrality = "mean")
 standard_error(NA_sm_sum_bayes)
 
@@ -174,9 +153,8 @@ standard_error(NA_sm_sum_bayes)
 
 ## Negative mood - counts
 
-NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1,
-                    family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                    chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+
 model_parameters(NA_sm_count_bayes, centrality = "mean")
 standard_error(NA_sm_count_bayes)
 
@@ -187,7 +165,7 @@ standard_error(NA_sm_count_bayes)
 
 
 
-## Positive Affect on SM - Within-Day Models Bayesian
+## Positive Affect on SM predicting social media use
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
 ###check utility of random slopes
@@ -203,13 +181,11 @@ model4 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | p
 anova(model3, model4)
 
 
-#--------------------------------------------Pos affect & same day SM------------------------------------------------------------------------------------#
+#--------------------------------------------Bayesian multilevel models-------------------------------------------#
 
 ## Positive affect & minutes of SM
 
-PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1,
-                    family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                    chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(PA_on_SM_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_day_bayes)
@@ -217,9 +193,7 @@ standard_error(PA_on_SM_day_bayes)
 
 ## Positive affect & SM checks
 
-PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1,
-                    family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                    chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 
 model_parameters(PA_on_SM_count_day_bayes, centrality = "mean")
@@ -229,7 +203,7 @@ standard_error(PA_on_SM_count_day_bayes)
 
 ```
 
-## Negative Affect on SM 
+## Negative Affect on SM predicting social media use
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
 ###check utility of random slopes
@@ -238,23 +212,20 @@ model2 <- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid
 
 anova(model1, model2)
 
-summary(model1)
 
 model3 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
 model4 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
 
 anova(model3, model4)
 
-summary(model3)
 
 
-#--------------------------------------------Neg affect & same day SM------------------------------------------------------------------------------------#
+#---------------------------------------------Bayesian multilevel models---------------------------------------#
+
 
 ## Negative affect & minutes of SM
 
-NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1,
-                    family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                    chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_on_SM_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_day_bayes)
@@ -263,9 +234,7 @@ standard_error(NA_on_SM_day_bayes)
 
 ## Negative affect & SM checks
 
-NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1,
-                    family = "gaussian", data = day, warmup = 2.5e3, iter = 1.5e4, thin = 1, 
-                    chains = 4, cores = 4, seed = "123",control = list(adapt_delta = 0.999, max_treedepth = 20))
+NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_on_SM_count_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_count_day_bayes)
