@@ -28,7 +28,7 @@ read_functions <- function (pkg) {
 }
 
 # make list of packages used
-packages <- c("tidyverse", "flextable", "psych", "irr")
+packages <- c("tidyverse", "flextable", "psych", "irr", "nlme")
 
 # apply function to read in above packages
 read_functions(packages)
@@ -101,14 +101,22 @@ df <- df %>% spread(var1, var2)
 df <- df %>% 
   ungroup() %>%
   select(-"pid")
-df <- as.data.frame(t(df))
-df <- df %>% mutate_all(~ifelse(is.nan(.), NA, .))
+#df <- as.data.frame(t(df))
+#df <- df %>% mutate_all(~ifelse(is.nan(.), NA, .))
 return(df)
   
   
 }
 
 ## apply function
+
+##Means only/empty models
+#morning_mood <- lme(NAf_am ~ 1,   #Fixed effects portion of model
+         #     data = day, #Which data to use
+          #    random = ~1 |pid, #Random effects portion of model
+         #     method="ML", #Estimation method
+         #     na.action="na.omit") #missing data handling
+#summary(morning_mood)
 
 morning_mood <- icc("morning_mood", day, "day_in_study", "NAf_am")
 evening_mood <- icc("evening_mood", day, "day_in_study", "NAf_pm")
@@ -198,7 +206,7 @@ Range = c("", paste(round(min(day$NAf_am, na.rm=TRUE), 2), "-", round(max(day$NA
 
 Possible_range = c("", "0-100", "0-100", "0-100", "0-100", "", "--", "--"),
 
-ICC = c("", round(morning$results$ICC[3], 2), round(evening$results$ICC[3], 2), round(pos$results$ICC[3], 2), round(neg$results$ICC[3], 2), "", round(time$results$ICC[3], 2), round(count$results$ICC[3], 2))
+ICC = c("", round(morning$results$ICC[1], 2), round(evening$results$ICC[1], 2), round(pos$results$ICC[1], 2), round(neg$results$ICC[1], 2), "", round(time$results$ICC[1], 2), round(count$results$ICC[1], 2))
 
 
   
