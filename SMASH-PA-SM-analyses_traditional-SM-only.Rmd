@@ -1,5 +1,5 @@
 ---
-title: "Affect and SM Use - SMASH Study"
+title: "Affect and SM Use - SMASH Study - Traditional SM Only"
 author: "Melissa Dreier"
 date: "10/07/2022"
 output: pdf_document
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for Analysis")
 data <- read.csv("final_SMASH_data_clean.csv") # main dataset
 
-
+ 
 ```
 
 ```{r setrparams, include=FALSE}
@@ -61,7 +61,7 @@ data <- data %>%
 
 day <- data %>%
   group_by(pid, day_in_study) %>%
-  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = mean(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
+  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationtraditionalsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = mean(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_counttraditionalsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
   mutate(NAf_sum = NAf_am + NAf_pm)
 
 ## add between-person variables (i.e., average of vars of interest for each participant, rather than participant by day)
