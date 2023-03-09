@@ -1,0 +1,203 @@
+---
+title: "SMASH Study App Usage Summary Stats"
+author: "Melissa Dreier"
+date: "2/17/2023"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r loaddata, include=FALSE}
+
+setwd("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/Data for analysis")
+data <- read.csv("final_SMASH_data_clean.csv") # main dataset
+key <- read.csv("C:/Users/Missy Dreier/Box/The Hamilton Lab/Studies- Complete or Collabs/SMASH Study/AWARE Sensing/SM Coding/SM_key_2.17.23.csv") # key for changing app var names
+
+
+```
+
+```{r loadpackages, include=FALSE}
+
+if (!require("tidyverse")) {install.packages("tidyverse"); require("tidyverse")}
+if (!require("data.table")) {install.packages("data.table"); require("data.table")}
+if (!require("plyr")) {install.packages("plyr"); require("plyr")}
+if (!require("reshape2")) {install.packages("reshape2"); require("reshape2")}
+if (!require("kableExtra")) {install.packages("kableExtra"); require(kableExtra)} #tables fanciness
+
+
+
+```
+
+
+```{r clean, include=FALSE}
+## remove rows where "hour in study" = NA. This means this was outside of the passive monitoring period
+data <- data[-which(is.na(data$hour_in_study)),]
+
+
+## remove anyone who does not use SM
+data <- data %>%
+  filter(Any_SM == 1)
+
+
+## remove first column of data & key
+#data <- data[, -c(1)]
+#key <- key[, -c(1)]
+
+
+## Subset to only columns on sum duration
+data_sums <- data %>% 
+  select(matches("phone_applications_foreground_rapids_sumduration") | pid)
+
+
+## Write funciton to isolate sum duration vars such that they match key exactly
+sum_duration_clean_initial <- function(x) {
+  x <- gsub("phone_applications_foreground_rapids_sumduration", "", x)
+  return(x)
+}
+
+
+## Apply this function  
+data_sums <- data_sums %>% rename_with(sum_duration_clean_initial)
+
+
+## subset key to only SM
+key_sm <- subset(key, SM==1 | application_name=="Discord")
+
+## make vector of variables that intersect between the data and our key
+apps <- intersect(names(data_sums), key_sm$package_name)
+
+## add pid to this vector
+apps <- append(apps, "pid")
+
+## add pid to our key so it stays preserved in our dataset
+pid <- data.frame(matrix(ncol = 0, nrow = 1)) # create empty dataframe
+pid$application_name <- as.character("pid")  
+pid$package_name <- as.character("pid")  
+key_sm <- dplyr::bind_rows(key_sm, pid)
+
+## select only columns that are in apps
+data_sums <- data_sums %>% select(apps)
+
+## order data_sums and key in same order
+data_sums <- data_sums[ , order(names(data_sums))]
+
+key_sm <- key_sm[order(key_sm$package_name), ]
+
+## change names to readable
+data_sums_new <- setNames(data_sums, key_sm$application_name)
+
+
+```
+
+
+```{r SMtable, include=FALSE, warning=FALSE, message=FALSE}
+
+
+## make app data into long format
+
+data_long <- melt(data_sums_new, id.vars=c("pid"))
+
+colnames(data_long)[which(colnames(data_long) == "variable")] <- "app_type"
+colnames(data_long)[which(colnames(data_long) == "value")] <- "sum_duration"
+
+data_long$app_type <- as.factor(data_long$app_type)
+
+
+
+```
+
+
+# Counts of Which SM Apps are Used by Any Participants
+
+```{r yesno, echo=FALSE, message=FALSE, warning=FALSE}
+## Yes/No Counts
+SMtable_yes_no  <- data_long %>% 
+  group_by(app_type, pid) %>%
+    dplyr::summarise(sums =  sum(sum_duration, na.rm = TRUE)) %>%
+    mutate(Yes_No = ifelse(!is.na(sums) & sums > 0, "Yes", "No")) %>%
+    dplyr::summarise(plyr::count(Yes_No))
+
+SMtable_yes_no_final <- spread(SMtable_yes_no, x, freq)
+
+SMtable_yes_no_final[is.na(SMtable_yes_no_final)] <- 0
+
+
+
+SMtable_yes_no_final <- SMtable_yes_no_final[order(as.character(SMtable_yes_no_final$app_type)), ]
+
+colnames(SMtable_yes_no_final)<- c("App Type",  "Count No", "Count Yes")
+
+
+#knitr::kable(SMtable_yes_no_final, format = "latex") %>% row_spec(0, bold=TRUE)
+
+kable(SMtable_yes_no_final)
+
+```
+
+
+
+# Hours of Apps Used Per Day
+```{r meansd, echo=FALSE, warning=FALSE, message=FALSE}
+
+## subset to only used apps
+SMtable_yes_no_final$`Count Yes` <- as.numeric(SMtable_yes_no_final$`Count Yes`)
+SMtable_keep <- subset(SMtable_yes_no_final, `Count Yes` > 0)
+
+## make vector of only used apps
+SM_used <- c(SMtable_keep$`App Type`)
+
+## keep only relevant apps
+data_long <- subset(data_long, (app_type %in% SM_used))
+
+## pull max days in study for each person
+data$pid <- as.factor(data$pid)
+max_days <- data %>%
+  group_by(pid) %>%
+  dplyr::summarise(Max_days = max(day_in_study, na.rm = TRUE))
+
+
+## summarise data using max days
+data_long$app_type <- as.factor(data_long$app_type)
+
+## get summed mins per person
+data_mean <- data_long %>%
+  group_by(app_type, pid) %>% 
+  dplyr::summarise(Sum_Duration_study = sum(sum_duration, na.rm = TRUE))
+
+## merge with max days
+
+data_mean <- merge(data_mean, max_days, by = "pid")
+
+## add total minutes per day var
+
+data_mean$Sum_Duration_mins_day = (data_mean$Sum_Duration_study / data_mean$Max_days)
+
+##make new dataset with means and SDs
+
+SMtable <- as.data.frame(data_mean %>% 
+  dplyr::group_by(app_type) %>%
+  dplyr::summarise(Mean = mean(Sum_Duration_mins_day, na.rm = TRUE), SD = sd(Sum_Duration_mins_day, na.rm = TRUE)))
+
+
+## order columns alphabetically
+SMtable <- SMtable[order(as.character(SMtable$app_type)), ]
+
+
+## Delete row names
+rownames(SMtable) <- NULL            
+
+
+
+## change column names
+
+colnames(SMtable)<- c("App Type",  "Mean", "SD")
+
+## make nice table
+knitr::kable(SMtable, format = "latex") %>% row_spec(0, bold=TRUE) 
+
+
+
+```

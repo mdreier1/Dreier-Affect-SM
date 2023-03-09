@@ -1,0 +1,1177 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Affect and SM Use - SMASH Study},
+  pdfauthor={Melissa Dreier},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Affect and SM Use - SMASH Study}
+\author{Melissa Dreier}
+\date{02/17/2023}
+
+\begin{document}
+\maketitle
+
+\hypertarget{descriptive-statistics}{%
+\section{Descriptive Statistics}\label{descriptive-statistics}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Days in Study}
+
+\CommentTok{\# summarize max days in study}
+\NormalTok{Max\_days }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(pid) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{Max\_day =} \FunctionTok{max}\NormalTok{(day\_in\_study, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{))}
+
+\CommentTok{\# get mean/sd day in study}
+\FunctionTok{mean}\NormalTok{(Max\_days}\SpecialCharTok{$}\NormalTok{Max\_day, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 29.68421
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sd}\NormalTok{(Max\_days}\SpecialCharTok{$}\NormalTok{Max\_day, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6.403581
+\end{verbatim}
+
+\hypertarget{models-prediciting-evening-negative-mood}{%
+\section{Models Prediciting Evening Negative
+Mood}\label{models-prediciting-evening-negative-mood}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#check utility of random slopes}
+\NormalTok{model1 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(NAf\_pm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sum\_sm\_p }\SpecialCharTok{+}\NormalTok{ NAf\_am\_p }\SpecialCharTok{+}\NormalTok{ sum\_sm\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+\NormalTok{model2 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(NAf\_pm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sum\_sm\_p }\SpecialCharTok{+}\NormalTok{ NAf\_am\_p }\SpecialCharTok{+}\NormalTok{ sum\_sm\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (sum\_sm\_p }\SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+
+\FunctionTok{anova}\NormalTok{(model1, model2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: day
+## Models:
+## model1: NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid)
+## model2: NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (sum_sm_p | pid)
+##        npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+## model1    7 2476.4 2502.0 -1231.2   2462.4                    
+## model2    9 2480.4 2513.3 -1231.2   2462.4     0  2          1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model3 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(NAf\_pm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ count\_sm\_p }\SpecialCharTok{+}\NormalTok{ NAf\_am\_p }\SpecialCharTok{+}\NormalTok{ count\_sm\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+\NormalTok{model4 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(NAf\_pm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ count\_sm\_p }\SpecialCharTok{+}\NormalTok{ NAf\_am\_p }\SpecialCharTok{+}\NormalTok{ count\_sm\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (count\_sm\_p }\SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+
+\FunctionTok{anova}\NormalTok{(model3, model4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: day
+## Models:
+## model3: NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid)
+## model4: NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (count_sm_p | pid)
+##        npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+## model3    7 2473.7 2499.3 -1229.9   2459.7                    
+## model4    9 2477.7 2510.7 -1229.9   2459.7     0  2          1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}Bayesian multilevel models{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}\#}
+
+\DocumentationTok{\#\# Negative mood {-} sumduration}
+\NormalTok{NA\_sm\_sum\_bayes  }\OtherTok{\textless{}{-}} \FunctionTok{brm}\NormalTok{(NAf\_pm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sum\_sm\_p }\SpecialCharTok{+}\NormalTok{ NAf\_am\_p }\SpecialCharTok{+}\NormalTok{ sum\_sm\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{prior =}\NormalTok{ prior1, }\AttributeTok{data =}\NormalTok{ day)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.509 seconds (Warm-up)
+## Chain 1:                0.172 seconds (Sampling)
+## Chain 1:                0.681 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.507 seconds (Warm-up)
+## Chain 2:                0.182 seconds (Sampling)
+## Chain 2:                0.689 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.511 seconds (Warm-up)
+## Chain 3:                0.208 seconds (Sampling)
+## Chain 3:                0.719 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.452 seconds (Warm-up)
+## Chain 4:                0.191 seconds (Sampling)
+## Chain 4:                0.643 seconds (Total)
+## Chain 4:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{model\_parameters}\NormalTok{(NA\_sm\_sum\_bayes, }\AttributeTok{centrality =} \StringTok{"mean"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Fixed effects
+## 
+## Parameter    |  Mean |        95% CI |     pd | % in ROPE |  Rhat |     ESS
+## ---------------------------------------------------------------------------
+## (Intercept)  | -1.72 | [-6.80, 3.26] | 74.25% |    44.47% | 0.999 | 4910.00
+## sum_sm_p     |  0.03 | [-0.03, 0.08] | 83.12% |      100% | 1.000 | 4588.00
+## NAf_am_p     |  0.12 | [ 0.01, 0.22] | 98.32% |      100% | 1.000 | 4798.00
+## sum_sm_p_c   | -0.01 | [-0.05, 0.03] | 69.05% |      100% | 1.000 | 4844.00
+## day_in_study |  0.13 | [-0.12, 0.37] | 84.33% |      100% | 1.000 | 4310.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter |  Mean |         95% CI |   pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------
+## sigma     | 18.10 | [16.74, 19.71] | 100% |        0% | 0.999 | 4421.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{standard\_error}\NormalTok{(NA\_sm\_sum\_bayes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Parameter         SE
+## 1    b_Intercept 2.60426357
+## 2     b_sum_sm_p 0.02713032
+## 3     b_NAf_am_p 0.05318204
+## 4   b_sum_sm_p_c 0.02144841
+## 5 b_day_in_study 0.12583939
+## 6          sigma 0.76112891
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Negative mood {-} counts}
+
+\NormalTok{NA\_sm\_count\_bayes  }\OtherTok{\textless{}{-}} \FunctionTok{brm}\NormalTok{(NAf\_pm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ count\_sm\_p }\SpecialCharTok{+}\NormalTok{ NAf\_am\_p }\SpecialCharTok{+}\NormalTok{ count\_sm\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{prior =}\NormalTok{ prior1, }\AttributeTok{data =}\NormalTok{ day)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.659 seconds (Warm-up)
+## Chain 1:                0.182 seconds (Sampling)
+## Chain 1:                0.841 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.701 seconds (Warm-up)
+## Chain 2:                0.168 seconds (Sampling)
+## Chain 2:                0.869 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.597 seconds (Warm-up)
+## Chain 3:                0.162 seconds (Sampling)
+## Chain 3:                0.759 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL '9e3e0de898197cb843beae7a536602f2' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.699 seconds (Warm-up)
+## Chain 4:                0.2 seconds (Sampling)
+## Chain 4:                0.899 seconds (Total)
+## Chain 4:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{model\_parameters}\NormalTok{(NA\_sm\_count\_bayes, }\AttributeTok{centrality =} \StringTok{"mean"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Fixed effects
+## 
+## Parameter    |      Mean |        95% CI |     pd | % in ROPE |  Rhat |     ESS
+## -------------------------------------------------------------------------------
+## (Intercept)  |     -1.40 | [-6.80, 3.97] | 69.45% |    45.66% | 1.000 | 5715.00
+## count_sm_p   |      0.03 | [ 0.00, 0.06] | 97.32% |      100% | 0.999 | 5707.00
+## NAf_am_p     |      0.12 | [ 0.01, 0.23] | 98.58% |      100% | 1.000 | 5181.00
+## count_sm_p_c | -7.15e-03 | [-0.03, 0.02] | 71.08% |      100% | 1.001 | 4559.00
+## day_in_study |      0.12 | [-0.12, 0.36] | 82.38% |      100% | 1.001 | 5377.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter |  Mean |         95% CI |   pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------
+## sigma     | 18.02 | [16.63, 19.63] | 100% |        0% | 1.000 | 5333.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{standard\_error}\NormalTok{(NA\_sm\_count\_bayes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Parameter         SE
+## 1    b_Intercept 2.77884458
+## 2   b_count_sm_p 0.01582242
+## 3     b_NAf_am_p 0.05409121
+## 4 b_count_sm_p_c 0.01274754
+## 5 b_day_in_study 0.12411595
+## 6          sigma 0.76793212
+\end{verbatim}
+
+\hypertarget{positive-affect-on-sm-predicting-social-media-use}{%
+\subsection{Positive Affect on SM predicting social media
+use}\label{positive-affect-on-sm-predicting-social-media-use}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#check utility of random slopes}
+\NormalTok{model1 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(sum\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Pos\_p }\SpecialCharTok{+}\NormalTok{ SM\_Pos\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+\NormalTok{model2 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(sum\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Pos\_p }\SpecialCharTok{+}\NormalTok{ SM\_Pos\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (SM\_Pos\_p }\SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+
+\FunctionTok{anova}\NormalTok{(model1, model2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: day
+## Models:
+## model1: sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid)
+## model2: sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid)
+##        npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+## model1    6 4071.7 4095.7 -2029.9   4059.7                    
+## model2    8 4075.7 4107.7 -2029.9   4059.7     0  2          1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model3 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(count\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Pos\_p }\SpecialCharTok{+}\NormalTok{ SM\_Pos\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+\NormalTok{model4 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(count\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Pos\_p }\SpecialCharTok{+}\NormalTok{ SM\_Pos\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (SM\_Pos\_p }\SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+
+\FunctionTok{anova}\NormalTok{(model3, model4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: day
+## Models:
+## model3: count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid)
+## model4: count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid)
+##        npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+## model3    6 4535.5 4559.4 -2261.7   4523.5                     
+## model4    8 4539.4 4571.4 -2261.7   4523.4 0.0227  2     0.9887
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}Bayesian multilevel models{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}\#}
+
+\DocumentationTok{\#\# Positive affect \& minutes of SM}
+
+\NormalTok{PA\_on\_SM\_day\_bayes  }\OtherTok{\textless{}{-}} \FunctionTok{brm}\NormalTok{(sum\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Pos\_p }\SpecialCharTok{+}\NormalTok{ SM\_Pos\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{prior =}\NormalTok{ prior1, }\AttributeTok{data =}\NormalTok{ day)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SAMPLING FOR MODEL 'a98326f397de299d480e9dfef402fe17' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.36 seconds (Warm-up)
+## Chain 1:                0.256 seconds (Sampling)
+## Chain 1:                0.616 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL 'a98326f397de299d480e9dfef402fe17' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.405 seconds (Warm-up)
+## Chain 2:                0.201 seconds (Sampling)
+## Chain 2:                0.606 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL 'a98326f397de299d480e9dfef402fe17' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.422 seconds (Warm-up)
+## Chain 3:                0.275 seconds (Sampling)
+## Chain 3:                0.697 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL 'a98326f397de299d480e9dfef402fe17' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.375 seconds (Warm-up)
+## Chain 4:                0.158 seconds (Sampling)
+## Chain 4:                0.533 seconds (Total)
+## Chain 4:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{model\_parameters}\NormalTok{(PA\_on\_SM\_day\_bayes, }\AttributeTok{centrality =} \StringTok{"mean"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Fixed effects
+## 
+## Parameter    |  Mean |         95% CI |     pd | % in ROPE |  Rhat |     ESS
+## ----------------------------------------------------------------------------
+## (Intercept)  | 10.98 | [-0.05, 22.44] | 97.40% |     7.89% | 1.000 | 3920.00
+## SM_Pos_p     |  0.22 | [ 0.02,  0.42] | 98.75% |      100% | 0.999 | 4914.00
+## SM_Pos_p_c   | -0.10 | [-0.25,  0.06] | 89.12% |      100% | 0.999 | 4243.00
+## day_in_study | -0.28 | [-0.70,  0.12] | 91.00% |      100% | 1.001 | 4271.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter |  Mean |         95% CI |   pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------
+## sigma     | 37.47 | [34.97, 40.20] | 100% |        0% | 1.000 | 6264.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{standard\_error}\NormalTok{(PA\_on\_SM\_day\_bayes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Parameter         SE
+## 1    b_Intercept 5.70411864
+## 2     b_SM_Pos_p 0.10210349
+## 3   b_SM_Pos_p_c 0.07807433
+## 4 b_day_in_study 0.20793483
+## 5          sigma 1.33215738
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Positive affect \& SM checks}
+
+\NormalTok{PA\_on\_SM\_count\_day\_bayes  }\OtherTok{\textless{}{-}} \FunctionTok{brm}\NormalTok{(count\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Pos\_p }\SpecialCharTok{+}\NormalTok{ SM\_Pos\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{prior =}\NormalTok{ prior1, }\AttributeTok{data =}\NormalTok{ day)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SAMPLING FOR MODEL '3ea12f69d23dabae12a12424a98aa806' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.368 seconds (Warm-up)
+## Chain 1:                0.266 seconds (Sampling)
+## Chain 1:                0.634 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL '3ea12f69d23dabae12a12424a98aa806' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.41 seconds (Warm-up)
+## Chain 2:                0.222 seconds (Sampling)
+## Chain 2:                0.632 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL '3ea12f69d23dabae12a12424a98aa806' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.407 seconds (Warm-up)
+## Chain 3:                0.181 seconds (Sampling)
+## Chain 3:                0.588 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL '3ea12f69d23dabae12a12424a98aa806' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.376 seconds (Warm-up)
+## Chain 4:                0.267 seconds (Sampling)
+## Chain 4:                0.643 seconds (Total)
+## Chain 4:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{model\_parameters}\NormalTok{(PA\_on\_SM\_count\_day\_bayes, }\AttributeTok{centrality =} \StringTok{"mean"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Fixed effects
+## 
+## Parameter    |  Mean |          95% CI |     pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------------
+## (Intercept)  |  4.41 | [-15.72, 24.50] | 66.40% |    47.97% | 0.999 | 4792.00
+## SM_Pos_p     |  0.71 | [  0.32,  1.11] | 99.98% |      100% | 1.000 | 4884.00
+## SM_Pos_p_c   | -0.07 | [ -0.33,  0.20] | 68.10% |      100% | 0.999 | 4992.00
+## day_in_study |  0.06 | [ -0.66,  0.79] | 56.40% |      100% | 0.999 | 5040.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter |  Mean |         95% CI |   pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------
+## sigma     | 66.68 | [62.34, 71.46] | 100% |        0% | 1.000 | 4847.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{standard\_error}\NormalTok{(PA\_on\_SM\_count\_day\_bayes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Parameter         SE
+## 1    b_Intercept 10.2038408
+## 2     b_SM_Pos_p  0.1949664
+## 3   b_SM_Pos_p_c  0.1376621
+## 4 b_day_in_study  0.3798505
+## 5          sigma  2.3605602
+\end{verbatim}
+
+\hypertarget{negative-affect-on-sm-predicting-social-media-use}{%
+\subsection{Negative Affect on SM predicting social media
+use}\label{negative-affect-on-sm-predicting-social-media-use}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#check utility of random slopes}
+\NormalTok{model1 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(sum\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Neg\_p }\SpecialCharTok{+}\NormalTok{ SM\_Neg\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+\NormalTok{model2 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(sum\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Neg\_p }\SpecialCharTok{+}\NormalTok{ SM\_Neg\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (SM\_Neg\_p }\SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+
+\FunctionTok{anova}\NormalTok{(model1, model2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: day
+## Models:
+## model1: sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid)
+## model2: sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid)
+##        npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+## model1    6 3003.4 3025.5 -1495.7   2991.4                     
+## model2    8 3003.8 3033.3 -1493.9   2987.8 3.5609  2     0.1686
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model3 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(count\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Neg\_p }\SpecialCharTok{+}\NormalTok{ SM\_Neg\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+\NormalTok{model4 }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(count\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Neg\_p }\SpecialCharTok{+}\NormalTok{ SM\_Neg\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (SM\_Neg\_p }\SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{data =}\NormalTok{ day)}
+
+\FunctionTok{anova}\NormalTok{(model3, model4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: day
+## Models:
+## model3: count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid)
+## model4: count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid)
+##        npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+## model3    6 3324.8 3346.9 -1656.4   3312.8                    
+## model4    8 3328.8 3358.3 -1656.4   3312.8     0  2          1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}Bayesian multilevel models{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}\#}
+
+
+\DocumentationTok{\#\# Negative affect \& minutes of SM}
+
+\NormalTok{NA\_on\_SM\_day\_bayes  }\OtherTok{\textless{}{-}} \FunctionTok{brm}\NormalTok{(sum\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Neg\_p }\SpecialCharTok{+}\NormalTok{ SM\_Neg\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{prior =}\NormalTok{ prior1, }\AttributeTok{data =}\NormalTok{ day)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SAMPLING FOR MODEL '26e490a115e8c2bf26a915097affe998' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.313 seconds (Warm-up)
+## Chain 1:                0.205 seconds (Sampling)
+## Chain 1:                0.518 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL '26e490a115e8c2bf26a915097affe998' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.304 seconds (Warm-up)
+## Chain 2:                0.116 seconds (Sampling)
+## Chain 2:                0.42 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL '26e490a115e8c2bf26a915097affe998' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.32 seconds (Warm-up)
+## Chain 3:                0.231 seconds (Sampling)
+## Chain 3:                0.551 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL '26e490a115e8c2bf26a915097affe998' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.301 seconds (Warm-up)
+## Chain 4:                0.253 seconds (Sampling)
+## Chain 4:                0.554 seconds (Total)
+## Chain 4:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{model\_parameters}\NormalTok{(NA\_on\_SM\_day\_bayes, }\AttributeTok{centrality =} \StringTok{"mean"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Fixed effects
+## 
+## Parameter    |  Mean |         95% CI |     pd | % in ROPE |  Rhat |     ESS
+## ----------------------------------------------------------------------------
+## (Intercept)  | 13.63 | [ 3.49, 24.07] | 99.55% |     0.66% | 1.000 | 5057.00
+## SM_Neg_p     |  0.28 | [-0.01,  0.56] | 97.28% |      100% | 1.000 | 5092.00
+## SM_Neg_p_c   | -0.03 | [-0.40,  0.35] | 55.25% |      100% | 0.999 | 4464.00
+## day_in_study | -0.59 | [-1.09, -0.09] | 98.83% |      100% | 1.000 | 4953.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter |  Mean |         95% CI |   pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------
+## sigma     | 38.90 | [35.99, 42.20] | 100% |        0% | 1.000 | 5019.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{standard\_error}\NormalTok{(NA\_on\_SM\_day\_bayes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Parameter        SE
+## 1    b_Intercept 5.2001874
+## 2     b_SM_Neg_p 0.1457094
+## 3   b_SM_Neg_p_c 0.1908647
+## 4 b_day_in_study 0.2567973
+## 5          sigma 1.6159424
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Negative affect \& SM checks}
+
+\NormalTok{NA\_on\_SM\_count\_day\_bayes  }\OtherTok{\textless{}{-}} \FunctionTok{brm}\NormalTok{(count\_sm\_p }\SpecialCharTok{\textasciitilde{}}\NormalTok{ SM\_Neg\_p }\SpecialCharTok{+}\NormalTok{ SM\_Neg\_p\_c }\SpecialCharTok{+}\NormalTok{ day\_in\_study }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{|}\NormalTok{ pid), }\AttributeTok{prior =}\NormalTok{ prior1, }\AttributeTok{data =}\NormalTok{ day)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## SAMPLING FOR MODEL 'f4c668a9e41ced757d3f7ff51f28c56f' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.315 seconds (Warm-up)
+## Chain 1:                0.201 seconds (Sampling)
+## Chain 1:                0.516 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL 'f4c668a9e41ced757d3f7ff51f28c56f' NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.302 seconds (Warm-up)
+## Chain 2:                0.19 seconds (Sampling)
+## Chain 2:                0.492 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL 'f4c668a9e41ced757d3f7ff51f28c56f' NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.37 seconds (Warm-up)
+## Chain 3:                0.141 seconds (Sampling)
+## Chain 3:                0.511 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL 'f4c668a9e41ced757d3f7ff51f28c56f' NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.315 seconds (Warm-up)
+## Chain 4:                0.153 seconds (Sampling)
+## Chain 4:                0.468 seconds (Total)
+## Chain 4:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{model\_parameters}\NormalTok{(NA\_on\_SM\_count\_day\_bayes, }\AttributeTok{centrality =} \StringTok{"mean"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Fixed effects
+## 
+## Parameter    |  Mean |         95% CI |     pd | % in ROPE |  Rhat |     ESS
+## ----------------------------------------------------------------------------
+## (Intercept)  |  9.85 | [-7.11, 26.63] | 87.12% |    34.89% | 1.000 | 4682.00
+## SM_Neg_p     |  0.56 | [ 0.05,  1.05] | 98.50% |      100% | 1.000 | 4703.00
+## SM_Neg_p_c   |  0.18 | [-0.47,  0.79] | 71.08% |      100% | 0.999 | 4260.00
+## day_in_study | -0.57 | [-1.39,  0.26] | 90.90% |      100% | 1.000 | 5003.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter |  Mean |         95% CI |   pd | % in ROPE |  Rhat |     ESS
+## -----------------------------------------------------------------------
+## sigma     | 66.95 | [61.79, 72.79] | 100% |        0% | 1.000 | 4886.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{standard\_error}\NormalTok{(NA\_on\_SM\_count\_day\_bayes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Parameter        SE
+## 1    b_Intercept 8.5550163
+## 2     b_SM_Neg_p 0.2563920
+## 3   b_SM_Neg_p_c 0.3190831
+## 4 b_day_in_study 0.4251543
+## 5          sigma 2.7845222
+\end{verbatim}
+
+\end{document}

@@ -150,7 +150,7 @@ anova(model3, model4)
 #---------------------------------------------Bayesian multilevel models---------------------------------------#
 
 ## Negative mood - sumduration
-NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 + sum_sm_p | pid), prior = prior1, data = day)
+NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 model_parameters(NA_sm_sum_bayes, centrality = "mean")
 standard_error(NA_sm_sum_bayes)
 
@@ -158,7 +158,7 @@ standard_error(NA_sm_sum_bayes)
 
 ## Negative mood - counts
 
-NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 + count_sm_p | pid), prior = prior1, data = day)
+NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_sm_count_bayes, centrality = "mean")
 standard_error(NA_sm_count_bayes)
@@ -190,7 +190,7 @@ anova(model3, model4)
 
 ## Positive affect & minutes of SM
 
-PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 + SM_Pos_p | pid), prior = prior1, data = day)
+PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(PA_on_SM_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_day_bayes)
@@ -198,7 +198,7 @@ standard_error(PA_on_SM_day_bayes)
 
 ## Positive affect & SM checks
 
-PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 + SM_Pos_p | pid), prior = prior1, data = day)
+PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 
 model_parameters(PA_on_SM_count_day_bayes, centrality = "mean")
@@ -230,7 +230,7 @@ anova(model3, model4)
 
 ## Negative affect & minutes of SM
 
-NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 + SM_Neg_p | pid), prior = prior1, data = day)
+NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_on_SM_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_day_bayes)
@@ -239,7 +239,7 @@ standard_error(NA_on_SM_day_bayes)
 
 ## Negative affect & SM checks
 
-NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 + SM_Neg_p | pid), prior = prior1, data = day)
+NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_on_SM_count_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_count_day_bayes)
