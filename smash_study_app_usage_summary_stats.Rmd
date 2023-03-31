@@ -148,7 +148,7 @@ flextable(SMtable_yes_no_final)
 
 
 
-# Hours of Apps Used Per Day
+# Minutes of Apps Used Per Day
 ```{r meansd, echo=FALSE, warning=FALSE, message=FALSE}
 
 ## subset to only used apps
