@@ -11,7 +11,7 @@
 
 <meta name="author" content="Melissa Dreier" />
 
-<meta name="date" content="2023-02-17" />
+<meta name="date" content="2023-03-31" />
 
 <title>Affect and SM Use - SMASH Study</title>
 
@@ -1570,23 +1570,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -1629,7 +1623,7 @@ display: none;
 
 <h1 class="title toc-ignore">Affect and SM Use - SMASH Study</h1>
 <h4 class="author">Melissa Dreier</h4>
-<h4 class="date">02/17/2023</h4>
+<h4 class="date">03/31/2023</h4>
 
 </div>
 
@@ -1645,40 +1639,19 @@ Max_days &lt;- data %&gt;%
 
 # get mean/sd day in study
 mean(Max_days$Max_day, na.rm=TRUE)</code></pre>
-<pre><code>## [1] 29.68421</code></pre>
+<pre><code>## [1] 30.57895</code></pre>
 <pre class="r"><code>sd(Max_days$Max_day, na.rm=TRUE)</code></pre>
-<pre><code>## [1] 6.403581</code></pre>
+<pre><code>## [1] 5.620555</code></pre>
 </div>
 <div id="models-prediciting-evening-negative-mood" class="section level1">
 <h1>Models Prediciting Evening Negative Mood</h1>
-<pre class="r"><code>###check utility of random slopes
-model1 &lt;- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), data = day)
-model2 &lt;- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (sum_sm_p | pid), data = day)
-
-anova(model1, model2)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"7","2":"2476.433","3":"2502.025","4":"-1231.216","5":"2462.433","6":"NA","7":"NA","8":"NA","_rn_":"model1"},{"1":"9","2":"2480.433","3":"2513.337","4":"-1231.216","5":"2462.433","6":"0","7":"2","8":"1","_rn_":"model2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<pre class="r"><code>model3 &lt;- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), data = day)
-model4 &lt;- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (count_sm_p | pid), data = day)
-
-anova(model3, model4)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"7","2":"2473.742","3":"2499.333","4":"-1229.871","5":"2459.742","6":"NA","7":"NA","8":"NA","_rn_":"model3"},{"1":"9","2":"2477.742","3":"2510.645","4":"-1229.871","5":"2459.742","6":"0","7":"2","8":"1","_rn_":"model4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<pre class="r"><code>#---------------------------------------------Bayesian multilevel models---------------------------------------#
-
-## Negative mood - sumduration
+<pre class="r"><code>## Negative mood - sumduration
 NA_sm_sum_bayes  &lt;- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)</code></pre>
 <pre><code>## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 1).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Gradient evaluation took 0.000148 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.48 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -1695,15 +1668,15 @@ NA_sm_sum_bayes  &lt;- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.579 seconds (Warm-up)
-## Chain 1:                0.216 seconds (Sampling)
-## Chain 1:                0.795 seconds (Total)
+## Chain 1:  Elapsed Time: 0.503 seconds (Warm-up)
+## Chain 1:                0.264 seconds (Sampling)
+## Chain 1:                0.767 seconds (Total)
 ## Chain 1: 
 ## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 2).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Gradient evaluation took 2.2e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.22 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -1720,15 +1693,15 @@ NA_sm_sum_bayes  &lt;- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.518 seconds (Warm-up)
-## Chain 2:                0.215 seconds (Sampling)
-## Chain 2:                0.733 seconds (Total)
+## Chain 2:  Elapsed Time: 0.539 seconds (Warm-up)
+## Chain 2:                0.263 seconds (Sampling)
+## Chain 2:                0.802 seconds (Total)
 ## Chain 2: 
 ## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 3).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Gradient evaluation took 1.9e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -1745,15 +1718,15 @@ NA_sm_sum_bayes  &lt;- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.585 seconds (Warm-up)
-## Chain 3:                0.164 seconds (Sampling)
-## Chain 3:                0.749 seconds (Total)
+## Chain 3:  Elapsed Time: 0.536 seconds (Warm-up)
+## Chain 3:                0.226 seconds (Sampling)
+## Chain 3:                0.762 seconds (Total)
 ## Chain 3: 
 ## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 4).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Gradient evaluation took 2.3e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.23 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -1770,30 +1743,30 @@ NA_sm_sum_bayes  &lt;- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.529 seconds (Warm-up)
-## Chain 4:                0.235 seconds (Sampling)
-## Chain 4:                0.764 seconds (Total)
+## Chain 4:  Elapsed Time: 0.518 seconds (Warm-up)
+## Chain 4:                0.265 seconds (Sampling)
+## Chain 4:                0.783 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>model_parameters(NA_sm_sum_bayes, centrality = &quot;mean&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"-1.705452187","4":"0.95","5":"-6.82684161","6":"3.40461305","7":"0.7475","8":"0.4568421","9":"0.9998142","10":"4761.365"},{"1":"b_sum_sm_p","2":"conditional","3":"0.026586334","4":"0.95","5":"-0.02908457","6":"0.08052256","7":"0.8325","8":"1.0000000","9":"0.9995199","10":"5648.851"},{"1":"b_NAf_am_p","2":"conditional","3":"0.120517209","4":"0.95","5":"0.01728320","6":"0.22260460","7":"0.9885","8":"1.0000000","9":"1.0003090","10":"6200.075"},{"1":"b_sum_sm_p_c","2":"conditional","3":"-0.009964842","4":"0.95","5":"-0.05314282","6":"0.03433998","7":"0.6645","8":"1.0000000","9":"1.0000187","10":"4503.581"},{"1":"b_day_in_study","2":"conditional","3":"0.125331270","4":"0.95","5":"-0.11589910","6":"0.37792966","7":"0.8440","8":"1.0000000","9":"1.0003645","10":"5101.465"},{"1":"sigma","2":"sigma","3":"18.102360874","4":"0.95","5":"16.66561496","6":"19.65581398","7":"1.0000","8":"0.0000000","9":"1.0007967","10":"5234.096"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"-1.634983883","4":"0.95","5":"-6.82482127","6":"3.46452634","7":"0.73925","8":"0.4531579","9":"0.9997343","10":"4586.259"},{"1":"b_sum_sm_p","2":"conditional","3":"0.025618122","4":"0.95","5":"-0.02742957","6":"0.07707171","7":"0.82775","8":"1.0000000","9":"0.9998141","10":"5096.077"},{"1":"b_NAf_am_p","2":"conditional","3":"0.117824207","4":"0.95","5":"0.01446423","6":"0.22237890","7":"0.98525","8":"1.0000000","9":"0.9995047","10":"5352.119"},{"1":"b_sum_sm_p_c","2":"conditional","3":"-0.008268871","4":"0.95","5":"-0.04926505","6":"0.03435968","7":"0.66000","8":"1.0000000","9":"0.9998426","10":"4954.401"},{"1":"b_day_in_study","2":"conditional","3":"0.108924310","4":"0.95","5":"-0.12721802","6":"0.34596487","7":"0.80300","8":"1.0000000","9":"0.9994887","10":"4894.745"},{"1":"sigma","2":"sigma","3":"17.986205241","4":"0.95","5":"16.60926925","6":"19.48687843","7":"1.00000","8":"0.0000000","9":"0.9998536","10":"5151.748"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>standard_error(NA_sm_sum_bayes)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"2.60389834"},{"1":"b_sum_sm_p","2":"0.02769198"},{"1":"b_NAf_am_p","2":"0.05244857"},{"1":"b_sum_sm_p_c","2":"0.02240227"},{"1":"b_day_in_study","2":"0.12463758"},{"1":"sigma","2":"0.76509257"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"2.58447271"},{"1":"b_sum_sm_p","2":"0.02681186"},{"1":"b_NAf_am_p","2":"0.05341580"},{"1":"b_sum_sm_p_c","2":"0.02103537"},{"1":"b_day_in_study","2":"0.12279981"},{"1":"sigma","2":"0.74376904"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>## Negative mood - counts
 
 NA_sm_count_bayes  &lt;- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)</code></pre>
 <pre><code>## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 1).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Gradient evaluation took 3.8e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.38 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -1810,15 +1783,15 @@ NA_sm_count_bayes  &lt;- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + d
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.656 seconds (Warm-up)
-## Chain 1:                0.197 seconds (Sampling)
-## Chain 1:                0.853 seconds (Total)
+## Chain 1:  Elapsed Time: 0.775 seconds (Warm-up)
+## Chain 1:                0.167 seconds (Sampling)
+## Chain 1:                0.942 seconds (Total)
 ## Chain 1: 
 ## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 2).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Gradient evaluation took 2.1e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.21 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -1835,15 +1808,15 @@ NA_sm_count_bayes  &lt;- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + d
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.779 seconds (Warm-up)
-## Chain 2:                0.237 seconds (Sampling)
-## Chain 2:                1.016 seconds (Total)
+## Chain 2:  Elapsed Time: 0.683 seconds (Warm-up)
+## Chain 2:                0.139 seconds (Sampling)
+## Chain 2:                0.822 seconds (Total)
 ## Chain 2: 
 ## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 3).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Gradient evaluation took 1.8e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -1860,15 +1833,15 @@ NA_sm_count_bayes  &lt;- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + d
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.766 seconds (Warm-up)
-## Chain 3:                0.204 seconds (Sampling)
-## Chain 3:                0.97 seconds (Total)
+## Chain 3:  Elapsed Time: 1.159 seconds (Warm-up)
+## Chain 3:                0.483 seconds (Sampling)
+## Chain 3:                1.642 seconds (Total)
 ## Chain 3: 
 ## 
-## SAMPLING FOR MODEL &#39;9e3e0de898197cb843beae7a536602f2&#39; NOW (CHAIN 4).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Gradient evaluation took 3.3e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.33 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -1885,53 +1858,32 @@ NA_sm_count_bayes  &lt;- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + d
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.761 seconds (Warm-up)
-## Chain 4:                0.146 seconds (Sampling)
-## Chain 4:                0.907 seconds (Total)
+## Chain 4:  Elapsed Time: 1.023 seconds (Warm-up)
+## Chain 4:                0.38 seconds (Sampling)
+## Chain 4:                1.403 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>model_parameters(NA_sm_count_bayes, centrality = &quot;mean&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"-1.456691908","4":"0.95","5":"-6.856265451","6":"3.84292936","7":"0.70750","8":"0.4797368","9":"1.0001695","10":"4263.405"},{"1":"b_count_sm_p","2":"conditional","3":"0.029366068","4":"0.95","5":"-0.002793131","6":"0.06094965","7":"0.96725","8":"1.0000000","9":"0.9994712","10":"4713.415"},{"1":"b_NAf_am_p","2":"conditional","3":"0.119650254","4":"0.95","5":"0.016528322","6":"0.21938941","7":"0.98750","8":"1.0000000","9":"0.9992911","10":"4630.840"},{"1":"b_count_sm_p_c","2":"conditional","3":"-0.006825399","4":"0.95","5":"-0.032221404","6":"0.01741431","7":"0.71700","8":"1.0000000","9":"0.9998920","10":"4460.146"},{"1":"b_day_in_study","2":"conditional","3":"0.119141187","4":"0.95","5":"-0.118724653","6":"0.35680468","7":"0.83800","8":"1.0000000","9":"0.9999184","10":"4932.074"},{"1":"sigma","2":"sigma","3":"18.011533819","4":"0.95","5":"16.608524926","6":"19.52203624","7":"1.00000","8":"0.0000000","9":"0.9991801","10":"4478.696"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"-1.313103244","4":"0.95","5":"-6.706579188","6":"3.94893065","7":"0.68250","8":"0.4642105","9":"0.9998011","10":"4585.899"},{"1":"b_count_sm_p","2":"conditional","3":"0.029825070","4":"0.95","5":"-0.001960873","6":"0.06098256","7":"0.96800","8":"1.0000000","9":"0.9996095","10":"5681.274"},{"1":"b_NAf_am_p","2":"conditional","3":"0.117456573","4":"0.95","5":"0.011169244","6":"0.22216863","7":"0.98425","8":"1.0000000","9":"0.9995721","10":"5430.108"},{"1":"b_count_sm_p_c","2":"conditional","3":"-0.006647957","4":"0.95","5":"-0.030827919","6":"0.01807392","7":"0.70025","8":"1.0000000","9":"0.9995501","10":"4689.330"},{"1":"b_day_in_study","2":"conditional","3":"0.107976648","4":"0.95","5":"-0.134403115","6":"0.34463673","7":"0.81975","8":"1.0000000","9":"0.9992366","10":"4904.874"},{"1":"sigma","2":"sigma","3":"17.913613705","4":"0.95","5":"16.562027898","6":"19.47047597","7":"1.00000","8":"0.0000000","9":"0.9997760","10":"5585.183"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>standard_error(NA_sm_count_bayes)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"2.67927970"},{"1":"b_count_sm_p","2":"0.01576860"},{"1":"b_NAf_am_p","2":"0.05198590"},{"1":"b_count_sm_p_c","2":"0.01223166"},{"1":"b_day_in_study","2":"0.12005485"},{"1":"sigma","2":"0.74295581"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"2.72539175"},{"1":"b_count_sm_p","2":"0.01598548"},{"1":"b_NAf_am_p","2":"0.05426765"},{"1":"b_count_sm_p_c","2":"0.01245771"},{"1":"b_day_in_study","2":"0.12058058"},{"1":"sigma","2":"0.75023738"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div id="positive-affect-on-sm-predicting-social-media-use" class="section level2">
 <h2>Positive Affect on SM predicting social media use</h2>
-<pre class="r"><code>###check utility of random slopes
-model1 &lt;- lmer(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), data = day)
-model2 &lt;- lmer(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid), data = day)
-
-anova(model1, model2)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"6","2":"4071.74","3":"4095.733","4":"-2029.87","5":"4059.74","6":"NA","7":"NA","8":"NA","_rn_":"model1"},{"1":"8","2":"4075.74","3":"4107.731","4":"-2029.87","5":"4059.74","6":"9.094947e-13","7":"2","8":"1","_rn_":"model2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<pre class="r"><code>model3 &lt;- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), data = day)
-model4 &lt;- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid), data = day)
-
-anova(model3, model4)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"6","2":"4535.451","3":"4559.445","4":"-2261.726","5":"4523.451","6":"NA","7":"NA","8":"NA","_rn_":"model3"},{"1":"8","2":"4539.428","3":"4571.420","4":"-2261.714","5":"4523.428","6":"0.02269953","7":"2","8":"0.9887144","_rn_":"model4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<pre class="r"><code>#--------------------------------------------Bayesian multilevel models-------------------------------------------#
-
-## Positive affect &amp; minutes of SM
+<pre class="r"><code>## Positive affect &amp; minutes of SM
 
 PA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)</code></pre>
 <pre><code>## 
-## SAMPLING FOR MODEL &#39;a98326f397de299d480e9dfef402fe17&#39; NOW (CHAIN 1).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Gradient evaluation took 4.8e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.48 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -1948,15 +1900,15 @@ PA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + 
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.506 seconds (Warm-up)
-## Chain 1:                0.295 seconds (Sampling)
-## Chain 1:                0.801 seconds (Total)
+## Chain 1:  Elapsed Time: 0.467 seconds (Warm-up)
+## Chain 1:                0.231 seconds (Sampling)
+## Chain 1:                0.698 seconds (Total)
 ## Chain 1: 
 ## 
-## SAMPLING FOR MODEL &#39;a98326f397de299d480e9dfef402fe17&#39; NOW (CHAIN 2).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Gradient evaluation took 2.5e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.25 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -1973,15 +1925,15 @@ PA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + 
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.449 seconds (Warm-up)
-## Chain 2:                0.318 seconds (Sampling)
-## Chain 2:                0.767 seconds (Total)
+## Chain 2:  Elapsed Time: 0.555 seconds (Warm-up)
+## Chain 2:                0.384 seconds (Sampling)
+## Chain 2:                0.939 seconds (Total)
 ## Chain 2: 
 ## 
-## SAMPLING FOR MODEL &#39;a98326f397de299d480e9dfef402fe17&#39; NOW (CHAIN 3).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Gradient evaluation took 2.6e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -1998,15 +1950,15 @@ PA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + 
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.474 seconds (Warm-up)
-## Chain 3:                0.311 seconds (Sampling)
-## Chain 3:                0.785 seconds (Total)
+## Chain 3:  Elapsed Time: 0.526 seconds (Warm-up)
+## Chain 3:                0.345 seconds (Sampling)
+## Chain 3:                0.871 seconds (Total)
 ## Chain 3: 
 ## 
-## SAMPLING FOR MODEL &#39;a98326f397de299d480e9dfef402fe17&#39; NOW (CHAIN 4).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Gradient evaluation took 3.1e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.31 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -2023,30 +1975,30 @@ PA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + 
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.466 seconds (Warm-up)
-## Chain 4:                0.275 seconds (Sampling)
-## Chain 4:                0.741 seconds (Total)
+## Chain 4:  Elapsed Time: 0.513 seconds (Warm-up)
+## Chain 4:                0.302 seconds (Sampling)
+## Chain 4:                0.815 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>model_parameters(PA_on_SM_day_bayes, centrality = &quot;mean&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"10.95242799","4":"0.95","5":"-0.33338364","6":"22.40478989","7":"0.97175","8":"0.08868421","9":"0.9995676","10":"5302.877"},{"1":"b_SM_Pos_p","2":"conditional","3":"0.22053658","4":"0.95","5":"0.01193925","6":"0.43379790","7":"0.98200","8":"1.00000000","9":"0.9998967","10":"5505.653"},{"1":"b_SM_Pos_p_c","2":"conditional","3":"-0.09548439","4":"0.95","5":"-0.25303214","6":"0.05693764","7":"0.88475","8":"1.00000000","9":"0.9993941","10":"5986.887"},{"1":"b_day_in_study","2":"conditional","3":"-0.28666949","4":"0.95","5":"-0.72328391","6":"0.13539332","7":"0.90525","8":"1.00000000","9":"0.9994834","10":"5577.769"},{"1":"sigma","2":"sigma","3":"37.50601800","4":"0.95","5":"34.99511649","6":"40.17286707","7":"1.00000","8":"0.00000000","9":"0.9996769","10":"5875.459"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"10.47299780","4":"0.95","5":"-0.53178997","6":"21.66654503","7":"0.96775","8":"0.09973684","9":"0.9998984","10":"4121.892"},{"1":"b_SM_Pos_p","2":"conditional","3":"0.22555244","4":"0.95","5":"0.01592987","6":"0.43581067","7":"0.98275","8":"1.00000000","9":"0.9995246","10":"5483.949"},{"1":"b_SM_Pos_p_c","2":"conditional","3":"-0.08726108","4":"0.95","5":"-0.24651027","6":"0.06516792","7":"0.87250","8":"1.00000000","9":"1.0008881","10":"3716.348"},{"1":"b_day_in_study","2":"conditional","3":"-0.27024007","4":"0.95","5":"-0.67384059","6":"0.14350117","7":"0.90225","8":"1.00000000","9":"0.9993071","10":"4745.567"},{"1":"sigma","2":"sigma","3":"37.07838996","4":"0.95","5":"34.61238860","6":"39.80492789","7":"1.00000","8":"0.00000000","9":"0.9995060","10":"5763.514"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>standard_error(PA_on_SM_day_bayes)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"5.79540546"},{"1":"b_SM_Pos_p","2":"0.10575783"},{"1":"b_SM_Pos_p_c","2":"0.07898032"},{"1":"b_day_in_study","2":"0.21763808"},{"1":"sigma","2":"1.30751592"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"5.6601215"},{"1":"b_SM_Pos_p","2":"0.1062421"},{"1":"b_SM_Pos_p_c","2":"0.0780634"},{"1":"b_day_in_study","2":"0.2072258"},{"1":"sigma","2":"1.3286873"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>## Positive affect &amp; SM checks
 
 PA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)</code></pre>
 <pre><code>## 
-## SAMPLING FOR MODEL &#39;3ea12f69d23dabae12a12424a98aa806&#39; NOW (CHAIN 1).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Gradient evaluation took 4.1e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.41 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -2063,15 +2015,15 @@ PA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.509 seconds (Warm-up)
-## Chain 1:                0.273 seconds (Sampling)
-## Chain 1:                0.782 seconds (Total)
+## Chain 1:  Elapsed Time: 0.494 seconds (Warm-up)
+## Chain 1:                0.187 seconds (Sampling)
+## Chain 1:                0.681 seconds (Total)
 ## Chain 1: 
 ## 
-## SAMPLING FOR MODEL &#39;3ea12f69d23dabae12a12424a98aa806&#39; NOW (CHAIN 2).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Gradient evaluation took 2.6e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -2088,15 +2040,15 @@ PA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.466 seconds (Warm-up)
-## Chain 2:                0.266 seconds (Sampling)
-## Chain 2:                0.732 seconds (Total)
+## Chain 2:  Elapsed Time: 0.584 seconds (Warm-up)
+## Chain 2:                0.24 seconds (Sampling)
+## Chain 2:                0.824 seconds (Total)
 ## Chain 2: 
 ## 
-## SAMPLING FOR MODEL &#39;3ea12f69d23dabae12a12424a98aa806&#39; NOW (CHAIN 3).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Gradient evaluation took 3.6e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.36 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -2113,15 +2065,15 @@ PA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.477 seconds (Warm-up)
-## Chain 3:                0.268 seconds (Sampling)
-## Chain 3:                0.745 seconds (Total)
+## Chain 3:  Elapsed Time: 0.508 seconds (Warm-up)
+## Chain 3:                0.374 seconds (Sampling)
+## Chain 3:                0.882 seconds (Total)
 ## Chain 3: 
 ## 
-## SAMPLING FOR MODEL &#39;3ea12f69d23dabae12a12424a98aa806&#39; NOW (CHAIN 4).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Gradient evaluation took 2.5e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.25 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -2138,55 +2090,33 @@ PA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.486 seconds (Warm-up)
-## Chain 4:                0.34 seconds (Sampling)
-## Chain 4:                0.826 seconds (Total)
+## Chain 4:  Elapsed Time: 0.521 seconds (Warm-up)
+## Chain 4:                0.354 seconds (Sampling)
+## Chain 4:                0.875 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>model_parameters(PA_on_SM_count_day_bayes, centrality = &quot;mean&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"4.86081079","4":"0.95","5":"-15.2969400","6":"24.7585884","7":"0.69050","8":"0.4686842","9":"1.0003443","10":"4213.746"},{"1":"b_SM_Pos_p","2":"conditional","3":"0.70347179","4":"0.95","5":"0.3192529","6":"1.0894462","7":"0.99975","8":"1.0000000","9":"0.9998737","10":"5097.062"},{"1":"b_SM_Pos_p_c","2":"conditional","3":"-0.07208987","4":"0.95","5":"-0.3414718","6":"0.1884643","7":"0.69250","8":"1.0000000","9":"0.9997703","10":"4381.714"},{"1":"b_day_in_study","2":"conditional","3":"0.05621364","4":"0.95","5":"-0.7290737","6":"0.8247012","7":"0.55550","8":"1.0000000","9":"0.9999980","10":"4832.172"},{"1":"sigma","2":"sigma","3":"66.67147514","4":"0.95","5":"62.2606506","6":"71.4161526","7":"1.00000","8":"0.0000000","9":"0.9997211","10":"5638.889"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"4.54957999","4":"0.95","5":"-14.7283223","6":"23.0049109","7":"0.68275","8":"0.4918421","9":"0.9993895","10":"4918.593"},{"1":"b_SM_Pos_p","2":"conditional","3":"0.68019455","4":"0.95","5":"0.3096230","6":"1.0462455","7":"1.00000","8":"1.0000000","9":"0.9994015","10":"5557.530"},{"1":"b_SM_Pos_p_c","2":"conditional","3":"-0.06717881","4":"0.95","5":"-0.3208620","6":"0.1878964","7":"0.69525","8":"1.0000000","9":"0.9998312","10":"4561.428"},{"1":"b_day_in_study","2":"conditional","3":"0.06046748","4":"0.95","5":"-0.6614078","6":"0.7565898","7":"0.55900","8":"1.0000000","9":"0.9999482","10":"5311.959"},{"1":"sigma","2":"sigma","3":"65.91424942","4":"0.95","5":"61.5827751","6":"70.5193201","7":"1.00000","8":"0.0000000","9":"1.0004741","10":"3899.819"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>standard_error(PA_on_SM_count_day_bayes)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"10.1412197"},{"1":"b_SM_Pos_p","2":"0.1947196"},{"1":"b_SM_Pos_p_c","2":"0.1371493"},{"1":"b_day_in_study","2":"0.3913145"},{"1":"sigma","2":"2.3502127"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"9.5963646"},{"1":"b_SM_Pos_p","2":"0.1841110"},{"1":"b_SM_Pos_p_c","2":"0.1318513"},{"1":"b_day_in_study","2":"0.3604825"},{"1":"sigma","2":"2.2846290"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 <div id="negative-affect-on-sm-predicting-social-media-use" class="section level2">
 <h2>Negative Affect on SM predicting social media use</h2>
-<pre class="r"><code>###check utility of random slopes
-model1 &lt;- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
-model2 &lt;- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
-
-anova(model1, model2)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"6","2":"3003.406","3":"3025.528","4":"-1495.703","5":"2991.406","6":"NA","7":"NA","8":"NA","_rn_":"model1"},{"1":"8","2":"3003.845","3":"3033.341","4":"-1493.923","5":"2987.845","6":"3.560873","7":"2","8":"0.1685646","_rn_":"model2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<pre class="r"><code>model3 &lt;- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
-model4 &lt;- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
-
-anova(model3, model4)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"6","2":"3324.78","3":"3346.902","4":"-1656.39","5":"3312.78","6":"NA","7":"NA","8":"NA","_rn_":"model3"},{"1":"8","2":"3328.78","3":"3358.276","4":"-1656.39","5":"3312.78","6":"0","7":"2","8":"1","_rn_":"model4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<pre class="r"><code>#---------------------------------------------Bayesian multilevel models---------------------------------------#
-
-
-## Negative affect &amp; minutes of SM
+<pre class="r"><code>## Negative affect &amp; minutes of SM
 
 NA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)</code></pre>
 <pre><code>## 
-## SAMPLING FOR MODEL &#39;26e490a115e8c2bf26a915097affe998&#39; NOW (CHAIN 1).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Gradient evaluation took 3.9e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.39 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -2203,15 +2133,15 @@ NA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + 
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.462 seconds (Warm-up)
-## Chain 1:                0.265 seconds (Sampling)
-## Chain 1:                0.727 seconds (Total)
+## Chain 1:  Elapsed Time: 0.387 seconds (Warm-up)
+## Chain 1:                0.285 seconds (Sampling)
+## Chain 1:                0.672 seconds (Total)
 ## Chain 1: 
 ## 
-## SAMPLING FOR MODEL &#39;26e490a115e8c2bf26a915097affe998&#39; NOW (CHAIN 2).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Gradient evaluation took 3.8e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.38 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -2228,15 +2158,15 @@ NA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + 
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.447 seconds (Warm-up)
-## Chain 2:                0.276 seconds (Sampling)
-## Chain 2:                0.723 seconds (Total)
+## Chain 2:  Elapsed Time: 0.408 seconds (Warm-up)
+## Chain 2:                0.283 seconds (Sampling)
+## Chain 2:                0.691 seconds (Total)
 ## Chain 2: 
 ## 
-## SAMPLING FOR MODEL &#39;26e490a115e8c2bf26a915097affe998&#39; NOW (CHAIN 3).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Gradient evaluation took 2.1e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.21 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -2253,15 +2183,15 @@ NA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + 
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.42 seconds (Warm-up)
-## Chain 3:                0.242 seconds (Sampling)
-## Chain 3:                0.662 seconds (Total)
+## Chain 3:  Elapsed Time: 0.395 seconds (Warm-up)
+## Chain 3:                0.291 seconds (Sampling)
+## Chain 3:                0.686 seconds (Total)
 ## Chain 3: 
 ## 
-## SAMPLING FOR MODEL &#39;26e490a115e8c2bf26a915097affe998&#39; NOW (CHAIN 4).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Gradient evaluation took 2e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.2 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -2278,30 +2208,30 @@ NA_on_SM_day_bayes  &lt;- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + 
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.392 seconds (Warm-up)
-## Chain 4:                0.257 seconds (Sampling)
-## Chain 4:                0.649 seconds (Total)
+## Chain 4:  Elapsed Time: 0.424 seconds (Warm-up)
+## Chain 4:                0.297 seconds (Sampling)
+## Chain 4:                0.721 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>model_parameters(NA_on_SM_day_bayes, centrality = &quot;mean&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"13.54165505","4":"0.95","5":"3.70004793","6":"23.25935259","7":"0.99450","8":"0.003684211","9":"0.9995229","10":"5523.993"},{"1":"b_SM_Neg_p","2":"conditional","3":"0.28426321","4":"0.95","5":"-0.01854046","6":"0.58812917","7":"0.96650","8":"1.000000000","9":"0.9998933","10":"6012.606"},{"1":"b_SM_Neg_p_c","2":"conditional","3":"-0.03010571","4":"0.95","5":"-0.40501042","6":"0.35715199","7":"0.56500","8":"1.000000000","9":"1.0019223","10":"4044.603"},{"1":"b_day_in_study","2":"conditional","3":"-0.58307429","4":"0.95","5":"-1.05788135","6":"-0.09618593","7":"0.98925","8":"1.000000000","9":"1.0003321","10":"5973.598"},{"1":"sigma","2":"sigma","3":"38.86762409","4":"0.95","5":"35.87907073","6":"42.19286919","7":"1.00000","8":"0.000000000","9":"0.9994420","10":"6010.635"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"13.59640658","4":"0.95","5":"4.034064937","6":"23.7493145","7":"0.99750","8":"0","9":"1.0008801","10":"6211.001"},{"1":"b_SM_Neg_p","2":"conditional","3":"0.29051298","4":"0.95","5":"0.005824447","6":"0.5812182","7":"0.97675","8":"1","9":"0.9993843","10":"6980.960"},{"1":"b_SM_Neg_p_c","2":"conditional","3":"-0.01332383","4":"0.95","5":"-0.390223391","6":"0.3517914","7":"0.52700","8":"1","9":"1.0000902","10":"5026.499"},{"1":"b_day_in_study","2":"conditional","3":"-0.58318840","4":"0.95","5":"-1.064701381","6":"-0.1070514","7":"0.99075","8":"1","9":"0.9995512","10":"7991.400"},{"1":"sigma","2":"sigma","3":"38.69553425","4":"0.95","5":"35.741283945","6":"42.0440388","7":"1.00000","8":"0","9":"0.9995530","10":"7337.328"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>standard_error(NA_on_SM_day_bayes)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"5.0072675"},{"1":"b_SM_Neg_p","2":"0.1537791"},{"1":"b_SM_Neg_p_c","2":"0.1923291"},{"1":"b_day_in_study","2":"0.2464382"},{"1":"sigma","2":"1.6211288"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"5.1075771"},{"1":"b_SM_Neg_p","2":"0.1450079"},{"1":"b_SM_Neg_p_c","2":"0.1907885"},{"1":"b_day_in_study","2":"0.2449025"},{"1":"sigma","2":"1.5784242"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>## Negative affect &amp; SM checks
 
 NA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)</code></pre>
 <pre><code>## 
-## SAMPLING FOR MODEL &#39;f4c668a9e41ced757d3f7ff51f28c56f&#39; NOW (CHAIN 1).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Gradient evaluation took 4.7e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.47 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -2318,15 +2248,15 @@ NA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.385 seconds (Warm-up)
-## Chain 1:                0.3 seconds (Sampling)
-## Chain 1:                0.685 seconds (Total)
+## Chain 1:  Elapsed Time: 0.416 seconds (Warm-up)
+## Chain 1:                0.249 seconds (Sampling)
+## Chain 1:                0.665 seconds (Total)
 ## Chain 1: 
 ## 
-## SAMPLING FOR MODEL &#39;f4c668a9e41ced757d3f7ff51f28c56f&#39; NOW (CHAIN 2).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Gradient evaluation took 2.7e-05 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.27 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -2343,15 +2273,15 @@ NA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.422 seconds (Warm-up)
-## Chain 2:                0.269 seconds (Sampling)
-## Chain 2:                0.691 seconds (Total)
+## Chain 2:  Elapsed Time: 0.471 seconds (Warm-up)
+## Chain 2:                0.254 seconds (Sampling)
+## Chain 2:                0.725 seconds (Total)
 ## Chain 2: 
 ## 
-## SAMPLING FOR MODEL &#39;f4c668a9e41ced757d3f7ff51f28c56f&#39; NOW (CHAIN 3).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Gradient evaluation took 1.9e-05 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -2368,15 +2298,15 @@ NA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.402 seconds (Warm-up)
-## Chain 3:                0.237 seconds (Sampling)
-## Chain 3:                0.639 seconds (Total)
+## Chain 3:  Elapsed Time: 0.429 seconds (Warm-up)
+## Chain 3:                0.251 seconds (Sampling)
+## Chain 3:                0.68 seconds (Total)
 ## Chain 3: 
 ## 
-## SAMPLING FOR MODEL &#39;f4c668a9e41ced757d3f7ff51f28c56f&#39; NOW (CHAIN 4).
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Gradient evaluation took 6.7e-05 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.67 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -2393,20 +2323,20 @@ NA_on_SM_count_day_bayes  &lt;- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.363 seconds (Warm-up)
-## Chain 4:                0.24 seconds (Sampling)
-## Chain 4:                0.603 seconds (Total)
+## Chain 4:  Elapsed Time: 0.399 seconds (Warm-up)
+## Chain 4:                0.321 seconds (Sampling)
+## Chain 4:                0.72 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>model_parameters(NA_on_SM_count_day_bayes, centrality = &quot;mean&quot;)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"9.9071304","4":"0.95","5":"-7.63767256","6":"27.1651003","7":"0.86775","8":"0.3468421","9":"0.9996156","10":"5365.758"},{"1":"b_SM_Neg_p","2":"conditional","3":"0.5615888","4":"0.95","5":"0.04856733","6":"1.0734352","7":"0.98450","8":"1.0000000","9":"0.9999683","10":"6885.437"},{"1":"b_SM_Neg_p_c","2":"conditional","3":"0.1741949","4":"0.95","5":"-0.44751461","6":"0.8164840","7":"0.71200","8":"1.0000000","9":"0.9998985","10":"5785.471"},{"1":"b_day_in_study","2":"conditional","3":"-0.5783383","4":"0.95","5":"-1.45227376","6":"0.3071172","7":"0.90025","8":"1.0000000","9":"1.0003722","10":"4755.690"},{"1":"sigma","2":"sigma","3":"67.0629149","4":"0.95","5":"61.88079398","6":"72.6786103","7":"1.00000","8":"0.0000000","9":"1.0001594","10":"5910.195"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Component"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CI"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CI_low"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CI_high"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["pd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ROPE_Percentage"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Rhat"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["ESS"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"conditional","3":"9.8419122","4":"0.95","5":"-7.35982963","6":"26.7288313","7":"0.87950","8":"0.3447368","9":"1.0004059","10":"4316.163"},{"1":"b_SM_Neg_p","2":"conditional","3":"0.5579183","4":"0.95","5":"0.07663445","6":"1.0496675","7":"0.98725","8":"1.0000000","9":"1.0001390","10":"4221.299"},{"1":"b_SM_Neg_p_c","2":"conditional","3":"0.1834687","4":"0.95","5":"-0.45132377","6":"0.8253018","7":"0.71525","8":"1.0000000","9":"1.0000674","10":"3210.783"},{"1":"b_day_in_study","2":"conditional","3":"-0.5688134","4":"0.95","5":"-1.42628790","6":"0.2720306","7":"0.90775","8":"1.0000000","9":"1.0008774","10":"4055.893"},{"1":"sigma","2":"sigma","3":"66.6459040","4":"0.95","5":"61.70979798","6":"72.3095315","7":"1.00000","8":"0.0000000","9":"0.9998266","10":"4272.490"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>standard_error(NA_on_SM_count_day_bayes)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"8.8318763"},{"1":"b_SM_Neg_p","2":"0.2629785"},{"1":"b_SM_Neg_p_c","2":"0.3192141"},{"1":"b_day_in_study","2":"0.4432228"},{"1":"sigma","2":"2.7953338"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Parameter"],"name":[1],"type":["chr"],"align":["left"]},{"label":["SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"b_Intercept","2":"8.6086321"},{"1":"b_SM_Neg_p","2":"0.2493678"},{"1":"b_SM_Neg_p_c","2":"0.3242815"},{"1":"b_day_in_study","2":"0.4330930"},{"1":"sigma","2":"2.7163604"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>

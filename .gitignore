@@ -3,6 +3,9 @@
 *.xls
 *.xlsx
 
+# html output from R Markdown
+*.html
+
 # History files
 .Rhistory
 .Rapp.history

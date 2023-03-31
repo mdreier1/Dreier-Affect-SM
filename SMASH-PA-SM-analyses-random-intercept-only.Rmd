@@ -1,7 +1,7 @@
 ---
 title: "Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "02/17/2023"
+date: "03/31/2023"
 output:
   html_document:
     df_print: paged
@@ -29,6 +29,8 @@ r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
 
 .libPaths("C:/Users/Missy Dreier/Documents") # ensure packages install in the correct place
+
+set.seed(1229)
 
 ```
 
@@ -134,20 +136,7 @@ sd(Max_days$Max_day, na.rm=TRUE)
 # Models Prediciting Evening Negative Mood 
 ```{r, message=FALSE, warning=FALSE, include=TRUE}
 
-###check utility of random slopes
-model1 <- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), data = day)
-model2 <- lmer(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (sum_sm_p | pid), data = day)
 
-anova(model1, model2)
-
-
-
-model3 <- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), data = day)
-model4 <- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (count_sm_p | pid), data = day)
-
-anova(model3, model4)
-
-#---------------------------------------------Bayesian multilevel models---------------------------------------#
 
 ## Negative mood - sumduration
 NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
@@ -173,21 +162,6 @@ standard_error(NA_sm_count_bayes)
 ## Positive Affect on SM predicting social media use
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
-###check utility of random slopes
-model1 <- lmer(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), data = day)
-model2 <- lmer(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid), data = day)
-
-anova(model1, model2)
-
-
-model3 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), data = day)
-model4 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (SM_Pos_p | pid), data = day)
-
-anova(model3, model4)
-
-
-#--------------------------------------------Bayesian multilevel models-------------------------------------------#
-
 ## Positive affect & minutes of SM
 
 PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
@@ -211,21 +185,6 @@ standard_error(PA_on_SM_count_day_bayes)
 ## Negative Affect on SM predicting social media use
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
-###check utility of random slopes
-model1 <- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
-model2 <- lmer(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
-
-anova(model1, model2)
-
-
-model3 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), data = day)
-model4 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (SM_Neg_p | pid), data = day)
-
-anova(model3, model4)
-
-
-
-#---------------------------------------------Bayesian multilevel models---------------------------------------#
 
 
 ## Negative affect & minutes of SM

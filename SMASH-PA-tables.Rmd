@@ -1,7 +1,7 @@
 ---
 title: "SMASH Affect Study Tables"
 author: "Melissa Dreier"
-date: "8/19/2022"
+date: "3/30/2023"
 output: word_document
 ---
 
@@ -19,6 +19,8 @@ data <- read.csv("final_SMASH_data_clean.csv") # main dataset
 
 
 ```{r loadpackages, include=FALSE}
+.libPaths("C:/Users/Missy Dreier/Documents")
+
 # write function that installs and reads packages in reproducible format
 read_functions <- function (pkg) {
   new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
@@ -41,10 +43,8 @@ read_functions(packages)
 ### cleaning data
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 
-
 ## remove rows where "hour in study" = NA. This means this was outside of the passive monitoring period
 data <- data[-which(is.na(data$hour_in_study)),]
-
 
 ## remove anyone who does not have SM data (in our study, these are iPhone users or people whose passive monitoring app did not work during the study period)
 data <- data %>%
@@ -55,7 +55,7 @@ data <- data %>%
 
 day <- data %>%
   group_by(pid, day_in_study) %>%
-  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = mean(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_countsm, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
+  dplyr::summarise(sum_sm = sum(phone_applications_foreground_rapids_sumdurationsm_sns_community_video_sns, na.rm = TRUE), NAf_am = mean(Mood_1_am, na.rm=TRUE), NAf_pm = mean(Mood_1_pm, na.rm=TRUE), count_sm = sum(phone_applications_foreground_rapids_counteventsm_sns_community_video_sns, na.rm = TRUE), SM_Pos = mean(SMPos_1_pm, na.rm=TRUE), SM_Neg = mean(SMNeg_1_pm, na.rm=TRUE)) %>%
   mutate(NAf_sum = NAf_am + NAf_pm)
 
 ## add between-person variables (i.e., average of vars of interest for each participant, rather than participant by day)
@@ -64,11 +64,21 @@ day <- day %>%
   mutate(sm_average = mean(sum_sm, na.rm=TRUE), PA_sm_average = mean(SM_Pos, na.rm=TRUE), NA_sm_average = mean(SM_Neg, na.rm=TRUE), count_average = mean(count_sm, na.rm=TRUE))
 
 
+## average hourly data
 
+average <- data %>%
+  group_by(pid) %>%
+  summarise(mean_sm = mean(phone_applications_foreground_rapids_sumdurationsm_sns_community_video_sns, na.rm=TRUE), mean_count = mean(phone_applications_foreground_rapids_counteventsm_sns_community_video_sns, na.rm=TRUE))
 
+mean(average$mean_sm)
+sd(average$mean_sm)
+
+mean(average$mean_count)
+sd(average$mean_count)
 
 wide <- data[which(data$day_in_study==1 & data$hour_in_study==1),] # create dataset with 1 row/participant for demographics
 
+wide_day <- day[which(day$day_in_study==1),]
 
 # summarize max days in study
 Max_days <- data %>%
@@ -81,7 +91,6 @@ Max_days <- data %>%
 sm_summary <- day %>%
   group_by(pid) %>%
   summarise(sm_time = (mean(sum_sm, na.rm=TRUE) * 60), sm_checks = mean(count_sm, na.rm=TRUE))
-
 
 
 ### check numbers for EMA surveys
@@ -110,20 +119,14 @@ return(df)
 
 ## apply function
 
-##Means only/empty models
-#morning_mood <- lme(NAf_am ~ 1,   #Fixed effects portion of model
-         #     data = day, #Which data to use
-          #    random = ~1 |pid, #Random effects portion of model
-         #     method="ML", #Estimation method
-         #     na.action="na.omit") #missing data handling
-#summary(morning_mood)
+
 
 morning_mood <- icc("morning_mood", day, "day_in_study", "NAf_am")
 evening_mood <- icc("evening_mood", day, "day_in_study", "NAf_pm")
 SM_pos <- icc("SM_pos", day, "day_in_study", "SM_Pos")
 SM_neg <- icc("SM_neg", day, "day_in_study", "SM_Neg")
-SM_time <- icc("SM_time", data, "hour_in_study", "phone_applications_foreground_rapids_sumdurationsm")
-SM_count <- icc("SM_time", data, "hour_in_study", "phone_applications_foreground_rapids_countsm")
+SM_time <- icc("SM_time", data, "hour_in_study", "phone_applications_foreground_rapids_sumdurationsm_sns_community_video_sns")
+SM_count <- icc("SM_time", data, "hour_in_study", "phone_applications_foreground_rapids_counteventsm_sns_community_video_sns")
 
 
 ### run ICCs
@@ -191,18 +194,18 @@ flextable(demog)
 measures = data.frame(
 
 
-Measure = c("Daily Measures", "Morning Negative Mood", "Evening Negative Mood", "Positive Affect on Social Media", "Negative Affect on Social Media", "Continuous Measures", "Time Spent on Social Media (hours)", "Social Media Checks"),
+Measure = c("Daily Measures", "Morning Negative Mood", "Evening Negative Mood", "Positive Affect on Social Media", "Negative Affect on Social Media", "Continuous Measures", "Time Spent on Social Media (minutes)", "Social Media Checks"),
 
 N = c("", paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$morning_mood)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$evening_mood)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$pos)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$neg)))), "", paste(n_distinct(sm_summary)-n_distinct(which(is.na(sm_summary$sm_time)))), paste(n_distinct(sm_summary)-n_distinct(which(is.na(sm_summary$sm_checks))))),
 
-n = c("", paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_am)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_pm)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Pos)))), paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Neg)))), "", paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_sumdurationsm)))), paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_countsm))))),
+n = c("", paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_am)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_pm)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Pos)))), paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Neg)))), "", paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_sumdurationsm_sns_community_video_sns)))), paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_counteventsm_sns_community_video_sns))))),
 
 
-M = c("", round(mean(day$NAf_am, na.rm=TRUE), 2), round(mean(day$NAf_pm, na.rm=TRUE), 2), round(mean(day$SM_Pos, na.rm=TRUE), 2), round(mean(day$SM_Neg, na.rm=TRUE), 2), "", round(mean(day$sum_sm, na.rm=TRUE) / 60, 2), round(mean(day$count_sm, na.rm=TRUE), 2)),
+M = c("", round(mean(day$NAf_am, na.rm=TRUE), 2), round(mean(day$NAf_pm, na.rm=TRUE), 2), round(mean(day$SM_Pos, na.rm=TRUE), 2), round(mean(day$SM_Neg, na.rm=TRUE), 2), "", round(mean(day$sum_sm, na.rm=TRUE), 2), round(mean(day$count_sm, na.rm=TRUE), 2)),
 
-SD = c("", round(sd(day$NAf_am, na.rm=TRUE), 2), round(sd(day$NAf_pm, na.rm=TRUE), 2), round(sd(day$SM_Pos, na.rm=TRUE), 2), round(sd(day$SM_Neg, na.rm=TRUE), 2), "", round(sd(day$sum_sm, na.rm=TRUE) / 60, 2), round(sd(day$count_sm, na.rm=TRUE), 2)),
+SD = c("", round(sd(day$NAf_am, na.rm=TRUE), 2), round(sd(day$NAf_pm, na.rm=TRUE), 2), round(sd(day$SM_Pos, na.rm=TRUE), 2), round(sd(day$SM_Neg, na.rm=TRUE), 2), "", round(sd(day$sum_sm, na.rm=TRUE), 2), round(sd(day$count_sm, na.rm=TRUE), 2)),
 
-Range = c("", paste(round(min(day$NAf_am, na.rm=TRUE), 2), "-", round(max(day$NAf_am, na.rm=TRUE), 2), sep=""), paste(round(min(day$NAf_pm, na.rm=TRUE), 2), "-", round(max(day$NAf_pm, na.rm=TRUE), 2), sep=""), paste(round(min(day$SM_Pos, na.rm=TRUE), 2), "-", round(max(day$SM_Pos, na.rm=TRUE), 2), sep=""), paste(round(min(day$SM_Neg, na.rm=TRUE), 2), "-", round(max(day$SM_Neg, na.rm=TRUE), 2), sep=""), "", paste(round(min(day$sum_sm, na.rm=TRUE) / 60, 2), "-", round(max(day$sum_sm, na.rm=TRUE) / 60, 2), sep=""), paste(round(min(day$count_sm, na.rm=TRUE), 2), "-", round(max(day$count_sm, na.rm=TRUE), 2), sep="")),
+Range = c("", paste(round(min(day$NAf_am, na.rm=TRUE), 2), "-", round(max(day$NAf_am, na.rm=TRUE), 2), sep=""), paste(round(min(day$NAf_pm, na.rm=TRUE), 2), "-", round(max(day$NAf_pm, na.rm=TRUE), 2), sep=""), paste(round(min(day$SM_Pos, na.rm=TRUE), 2), "-", round(max(day$SM_Pos, na.rm=TRUE), 2), sep=""), paste(round(min(day$SM_Neg, na.rm=TRUE), 2), "-", round(max(day$SM_Neg, na.rm=TRUE), 2), sep=""), "", paste(round(min(day$sum_sm, na.rm=TRUE) / 60, 2), "-", round(max(day$sum_sm, na.rm=TRUE), 2), sep=""), paste(round(min(day$count_sm, na.rm=TRUE), 2), "-", round(max(day$count_sm, na.rm=TRUE), 2), sep="")),
 
 Possible_range = c("", "0-100", "0-100", "0-100", "0-100", "", "--", "--"),
 
