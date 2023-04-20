@@ -6,7 +6,11 @@
 ### SMASH-PA-SM-Analyses.Rmd 
 
 + This is where I conduct the data cleaning (collapsing at day-level and person-centering the variables of interest). 
+<<<<<<< HEAD
 + Here is use BOTH random intercepts and random slows in my models
+=======
++ Here is use BOTH random intercepts and random slows in my models - which are the final results presented in this paper.
+>>>>>>> 8350995764d48cd3f83b22a1d4926a6110608fa4
 + Then, I conduct several sets of Bayesian multilevel models.
 + For the Bayesian multilevel models, I used the brms packages.
 + These models (in the order they appear) test: 
@@ -26,7 +30,11 @@
 ### SMASH-PA-SM-analyses-random-intercept-only.Rmd 
 
 + This is where I conduct the data cleaning (collapsing at day-level and person-centering the variables of interest). 
+<<<<<<< HEAD
 + Here is use ONLY random intercepts in my models.
+=======
++ Here is use ONLY random intercepts in my models - these are NOT the results presented in the paper but are presented for transparency and to highlight the important role of individual variability in this data.
+>>>>>>> 8350995764d48cd3f83b22a1d4926a6110608fa4
 + Then, I conduct several sets of Bayesian multilevel models.
 + For the Bayesian multilevel models, I used the brms packages.
 + These models (in the order they appear) test: 
