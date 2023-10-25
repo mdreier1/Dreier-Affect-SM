@@ -85,4 +85,4 @@
 
 ### correlation matrix.R
 
-+ This document creates the correlation matrix netween core study variables
++ This document creates the correlation matrix netween core study variables using the "apaTables" package in R (https://cran.r-project.org/web/packages/apaTables/apaTables.pdf)
