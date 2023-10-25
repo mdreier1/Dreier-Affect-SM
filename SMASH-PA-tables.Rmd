@@ -194,11 +194,11 @@ flextable(demog)
 measures = data.frame(
 
 
-Measure = c("Daily Measures", "Morning Negative Mood", "Evening Negative Mood", "Positive Affect on Social Media", "Negative Affect on Social Media", "Continuous Measures", "Time Spent on Social Media (minutes)", "Social Media Checks"),
+Measure = c("Daily Measures", "Morning Negative Mood", "Evening Negative Mood", "Positive Affect on Social Media", "Negative Affect on Social Media", "Continuous Measures (Daily bins)", "Time Spent on Social Media (minutes)", "Social Media Checks"),
 
 N = c("", paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$morning_mood)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$evening_mood)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$pos)))), paste(n_distinct(surveys)-n_distinct(which(is.na(surveys$neg)))), "", paste(n_distinct(sm_summary)-n_distinct(which(is.na(sm_summary$sm_time)))), paste(n_distinct(sm_summary)-n_distinct(which(is.na(sm_summary$sm_checks))))),
 
-n = c("", paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_am)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_pm)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Pos)))), paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Neg)))), "", paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_sumdurationsm_sns_community_video_sns)))), paste(n_distinct(data)-n_distinct(which(is.na(data$phone_applications_foreground_rapids_counteventsm_sns_community_video_sns))))),
+n = c("", paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_am)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$NAf_pm)))),  paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Pos)))), paste(n_distinct(day)-n_distinct(which(is.na(day$SM_Neg)))), "", paste(n_distinct(day)-n_distinct(which(is.na(day$sum_sm)))), paste(n_distinct(day)-n_distinct(which(is.na(day$count_sm))))),
 
 
 M = c("", round(mean(day$NAf_am, na.rm=TRUE), 2), round(mean(day$NAf_pm, na.rm=TRUE), 2), round(mean(day$SM_Pos, na.rm=TRUE), 2), round(mean(day$SM_Neg, na.rm=TRUE), 2), "", round(mean(day$sum_sm, na.rm=TRUE), 2), round(mean(day$count_sm, na.rm=TRUE), 2)),

@@ -1,7 +1,7 @@
 ---
 title: "Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "03/31/2023"
+date: "10/18/2023"
 output:
   html_document:
     df_print: paged
@@ -29,7 +29,6 @@ r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
 
 .libPaths("C:/Users/Missy Dreier/Documents") # ensure packages install in the correct place
-
 set.seed(1229)
 
 ```
@@ -44,7 +43,7 @@ read_functions <- function (pkg) {
 }
 
 # make list of packages used
-packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools", "parameters")
+packages <- c("lme4","lmerTest", "nlme", "tidyverse", "Hmisc", "brms","ggplot2", "sjstats","sjPlot","bayesplot", "coda", "EMAtools", "parameters", "naniar")
 
 # apply function to read in above packages
 read_functions(packages)
@@ -63,6 +62,11 @@ data <- data %>%
   filter(Any_SM == 1)
 
 
+
+
+## get info about missing data
+
+
 ## summarize data by day
 
 day <- data %>%
@@ -76,9 +80,10 @@ day <- day %>%
   mutate(sm_average = mean(sum_sm, na.rm=TRUE), PA_sm_average = mean(SM_Pos, na.rm=TRUE), NA_sm_average = mean(SM_Neg, na.rm=TRUE), count_average = mean(count_sm, na.rm=TRUE))
 
 
+
 #set weakly informative gaussian prior####
-prior1 <- c(set_prior("normal(0, 10)", class = "b"),
-            set_prior("normal(0, 10)", class = "Intercept")
+prior1 <- c(brms::set_prior("normal(0, 10)", class = "b"),
+            brms::set_prior("normal(0, 10)", class = "Intercept")
 )
 
 
@@ -107,6 +112,12 @@ day$NAf_pm_p_c <- pmean(day$pid, day$NAf_pm) # Evening negative affect overall m
 day$NAf_pm_p <- (day$NAf_pm - day$NAf_pm_p_c) # Evening negative Affect daily person-centered var
 
 
+### lagged variables
+
+
+day <- day %>% group_by(pid) %>%
+  dplyr::mutate(sum_sm_p_lag = lag(sum_sm_p, n = 1, default = NA), count_sm_p_lag = lag(count_sm_p, n = 1, default = NA), NAf_am_p_lag = lag(NAf_am_p, n = 1, default = NA), NAf_pm_p_lag = lag(NAf_pm_p, n = 1, default = NA))
+
 
 ```
 
@@ -127,30 +138,69 @@ Max_days <- data %>%
 mean(Max_days$Max_day, na.rm=TRUE)
 sd(Max_days$Max_day, na.rm=TRUE)
 
+#min(Max_days$Max_day, na.rm=TRUE)
 
+#View(Max_days)
+
+#setwd("C:/Users/Missy Dreier/OneDrive - Rutgers University/Documents/Papers/2022_SMASH_Affect/Paper writing/Current Research in Ecological and Social Psychology/RR1")
+
+#getwd()
+
+#write.csv(Max_days, file = "Days_in_study.csv", row.names = F)
+
+
+wide <- data[which(data$day_in_study==1 & data$hour_in_study==1),] # create dataset with 1 row/participant for demographics
+
+gender <- wide %>% select("pid", "GenderBirth") # subset data to just ID and sex
+
+totals <- day %>% group_by(pid) %>%
+  dplyr::summarise(sum_sm = sum(sum_sm, na.rm = TRUE), NAf_am = mean(NAf_am, na.rm=TRUE), NAf_pm = mean(NAf_pm, na.rm=TRUE), count_sm = sum(count_sm, na.rm = TRUE), SM_Pos = mean(SM_Pos, na.rm=TRUE), SM_Neg = mean(SM_Neg, na.rm=TRUE))
+
+## summarize dataset
+
+daygen <- merge(totals, gender, by = "pid") #merge
+
+
+t.test(sum_sm ~ GenderBirth, data = daygen) #test sex differences in SM screen time
+
+t.test(count_sm ~ GenderBirth, data = daygen) #test sex diffs in SM checking
+
+
+t.test(SM_Pos ~ GenderBirth, data = daygen) #test sex diffs in positive affect SM
+
+
+t.test(SM_Neg ~ GenderBirth, data = daygen) #test sex diffs in negative affect SM
+
+
+t.test(NAf_am ~ GenderBirth, data = daygen) #test sex diffs in general negative affect AM
+
+
+t.test(NAf_pm ~ GenderBirth, data = daygen) #test sex diffs in general negative affect PM
 
 ```
 
 
 
-# Models Prediciting Evening Negative Mood 
+# Models Prediciting Next morning Negative Mood 
 ```{r, message=FALSE, warning=FALSE, include=TRUE}
 
 
+#---------------------------------------------Bayesian multilevel models---------------------------------------#
 
 ## Negative mood - sumduration
-NA_sm_sum_bayes  <- brm(NAf_pm_p ~ sum_sm_p + NAf_am_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+NA_sm_sum_bayes  <- brm(NAf_am_p_lag ~ sum_sm_p + NAf_pm_p + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 model_parameters(NA_sm_sum_bayes, centrality = "mean")
 standard_error(NA_sm_sum_bayes)
 
 
-
 ## Negative mood - counts
 
-NA_sm_count_bayes  <- brm(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+NA_sm_count_bayes  <- brm(NAf_am_p_lag ~ count_sm_p + NAf_pm_p + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_sm_count_bayes, centrality = "mean")
 standard_error(NA_sm_count_bayes)
+
+
 
 
 ```
@@ -162,18 +212,18 @@ standard_error(NA_sm_count_bayes)
 ## Positive Affect on SM predicting social media use
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
+#--------------------------------------------Bayesian multilevel models-------------------------------------------#
+
 ## Positive affect & minutes of SM
 
-PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+PA_on_SM_day_bayes  <- brm(sum_sm_p_lag ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(PA_on_SM_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_day_bayes)
 
-
 ## Positive affect & SM checks
 
-PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
-
+PA_on_SM_count_day_bayes  <- brm(count_sm_p_lag ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(PA_on_SM_count_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_count_day_bayes)
@@ -186,10 +236,12 @@ standard_error(PA_on_SM_count_day_bayes)
 ```{r, include=TRUE, message=FALSE, warning=FALSE}
 
 
+#---------------------------------------------Bayesian multilevel models---------------------------------------#
+
 
 ## Negative affect & minutes of SM
 
-NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+NA_on_SM_day_bayes  <- brm(sum_sm_p_lag ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_on_SM_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_day_bayes)
@@ -198,7 +250,7 @@ standard_error(NA_on_SM_day_bayes)
 
 ## Negative affect & SM checks
 
-NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+NA_on_SM_count_day_bayes  <- brm(count_sm_p_lag ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_on_SM_count_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_count_day_bayes)
