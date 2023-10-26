@@ -1,6 +1,6 @@
-# Dreier-Affect-SM
+# Dreier-mood-SM
 
-+ This code cleans the Rutgers Hamilton Lab SMASH study data to collapse oberservations onto the day-level and conducts Bayesian multilevel models to explore within-person associations between social media use and affect (both on and off social media)
++ This code cleans the Rutgers Hamilton Lab SMASH study data to collapse oberservations onto the day-level and conducts Bayesian multilevel models to explore within-person associations between social media use and mood (both on and off social media)
 + Sample = 19 adolescents; Mage = 15.8(1.1)
 
 ## See Data Key.docx for a codebook of variables used
@@ -16,12 +16,12 @@
 + These models (in the order they appear) test: 
 1) whether social media 'screen time' predicts evening negative mood (accounting for morning negative mood)
 2) whether number of times checking social media predicts evening negative mood (accounting for morning negative mood)
-3) whether positive affect DURING social media use is associated with social media 'screen time'
-4) whether positive affect DURING social media use is associated with number of times checking social media
-5) whether negative affect DURING social media use is associated with social media 'screen time'
-6) whether negative affect DURING social media use is associated with number of times social media is checked
+3) whether positive mood DURING social media use is associated with social media 'screen time'
+4) whether positive mood DURING social media use is associated with number of times checking social media
+5) whether negative mood DURING social media use is associated with social media 'screen time'
+6) whether negative mood DURING social media use is associated with number of times social media is checked
 
-+ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive affect on social media, negative affect on social media). I also controlled for each person's day in the study.
++ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive mood on social media, negative mood on social media). I also controlled for each person's day in the study.
 
 ### RESULTS - SAME-DAY.pdf
 
@@ -35,14 +35,18 @@
 + Then, I conduct several sets of Bayesian multilevel models.
 + For the Bayesian multilevel models, I used the brms packages.
 + These models (in the order they appear) test: 
-1) whether social media 'screen time' predicts evening negative mood (accounting for morning negative mood)
-2) whether number of times checking social media predicts evening negative mood (accounting for morning negative mood)
-3) whether positive affect DURING social media use is associated with social media 'screen time'
-4) whether positive affect DURING social media use is associated with number of times checking social media
-5) whether negative affect DURING social media use is associated with social media 'screen time'
-6) whether negative affect DURING social media use is associated with number of times social media is checked
+1) whether social media 'screen time' predicts next morning negative mood (accounting for evening negative mood)
+2) whether number of times checking social media predicts next morning negative mood (accounting for evening negative mood)
+3) whether positive mood DURING social media use predicts social media 'screen time' next day
+4) whether 'screen time' predicts next-day positive mood
+5) whether positive mood DURING social media use predicts number of times checking social media next day
+6) whether social media checking predicts next-day positive mood
+7) whether negative mood DURING social media use predicts social media 'screen time' next day
+8) whether social media 'screen time' predicts next-day negative mood during use
+9) whether negative mood DURING social media use predicts number of times social media is checked next day
+10) whether social media checking predicts next-day negative mood during use
 
-+ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive affect on social media, negative affect on social media). I also controlled for each person's day in the study.
+
 
 ### RESULTS - LAGGED.pdf
 
@@ -58,16 +62,20 @@
 + These models (in the order they appear) test: 
 1) whether social media 'screen time' predicts evening negative mood (accounting for morning negative mood)
 2) whether number of times checking social media predicts evening negative mood (accounting for morning negative mood)
-3) whether positive affect DURING social media use is associated with social media 'screen time'
-4) whether positive affect DURING social media use is associated with number of times checking social media
-5) whether negative affect DURING social media use is associated with social media 'screen time'
-6) whether negative affect DURING social media use is associated with number of times social media is checked
+3) whether positive mood DURING social media use is associated with social media 'screen time'
+4) whether positive mood DURING social media use is associated with number of times checking social media
+5) whether negative mood DURING social media use is associated with social media 'screen time'
+6) whether negative mood DURING social media use is associated with number of times social media is checked
 
-+ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive affect on social media, negative affect on social media). I also controlled for each person's day in the study.
++ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive mood on social media, negative mood on social media). I also controlled for each person's day in the study.
 
 ### Supplemental Results - Random Slopes.pdf
 
 + This document is the PDF of the output from "SMASH-PA-SM-analyses-random-slope.Rmd"
+
+## Notes on models from all analyses
+
++ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive mood on social media, negative mood on social media). I also controlled for each person's day in the study.
 
 ### SMASH-PA-tables.Rmd
 
