@@ -21,7 +21,6 @@
 5) whether negative mood DURING social media use is associated with social media 'screen time'
 6) whether negative mood DURING social media use is associated with number of times social media is checked
 
-+ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive mood on social media, negative mood on social media). I also controlled for each person's day in the study.
 
 ### RESULTS - SAME-DAY.pdf
 
@@ -67,7 +66,6 @@
 5) whether negative mood DURING social media use is associated with social media 'screen time'
 6) whether negative mood DURING social media use is associated with number of times social media is checked
 
-+ For all Bayesian models, I was interested in within-person effects at the day-level. To isolate these effects, I controlled for between-person effects of each independent variable of interest (e.g., 'screen time', social media checks, positive mood on social media, negative mood on social media). I also controlled for each person's day in the study.
 
 ### Supplemental Results - Random Slopes.pdf
 
