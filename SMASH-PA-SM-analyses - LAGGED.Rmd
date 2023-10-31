@@ -1,7 +1,7 @@
 ---
 title: "Affect and SM Use - SMASH Study"
 author: "Melissa Dreier"
-date: "10/18/2023"
+date: "10/31/2023"
 output:
   html_document:
     df_print: paged
@@ -192,17 +192,39 @@ t.test(NAf_pm ~ GenderBirth, data = daygen) #test sex diffs in general negative 
 #---------------------------------------------Bayesian multilevel models---------------------------------------#
 
 ## Negative mood - sumduration
-NA_sm_sum_bayes  <- brm(NAf_am_p ~ sum_sm_p_lag + NAf_pm_p_lag + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+NA_sm_sum_bayes  <- brm(NAf_am_p ~ sum_sm_p_lag + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+
 model_parameters(NA_sm_sum_bayes, centrality = "mean")
 standard_error(NA_sm_sum_bayes)
+
+NA_sm_sum  <- lmer(NAf_am_p ~ sum_sm_p_lag + sum_sm_p_c + day_in_study + (1 | pid), data = day)
+
+
+## write function to extract standardized coefficients
+stdCoef.merMod <- function(object) {
+  sdy <- sd(getME(object,"y"))
+  sdx <- apply(getME(object,"X"), 2, sd)
+  sc <- fixef(object)*sdx/sdy
+  se.fixef <- coef(summary(object))[,"Std. Error"]
+  se <- se.fixef*sdx/sdy
+  return(data.frame(stdcoef=sc, stdse=se))
+}
+
+
+stdCoef.merMod(NA_sm_sum)
+
 
 
 ## Negative mood - counts
 
-NA_sm_count_bayes  <- brm(NAf_am_p ~ count_sm_p_lag + NAf_pm_p_lag + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
+NA_sm_count_bayes  <- brm(NAf_am_p ~ count_sm_p_lag + count_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(NA_sm_count_bayes, centrality = "mean")
 standard_error(NA_sm_count_bayes)
+
+NA_sm_count  <- lmer(NAf_am_p ~ count_sm_p_lag + count_sm_p_c + day_in_study + (1 | pid), data = day) # frequentist verison to extract coeffs
+
+stdCoef.merMod(NA_sm_count)
 
 
 
@@ -225,6 +247,13 @@ PA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Pos_p_lag + SM_Pos_p_c + day_in_study +
 model_parameters(PA_on_SM_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_day_bayes)
 
+
+PA_on_SM_day  <- lmer(sum_sm_p ~ SM_Pos_p_lag + SM_Pos_p_c + day_in_study + (1 | pid), data = day) # run frequentist version to extract standardized coefficients
+
+stdCoef.merMod(PA_on_SM_day) # standardized coefs
+
+
+
 ## Minutes of SM --> positive mood
 
 
@@ -234,12 +263,23 @@ model_parameters(SM_on_PA_day_bayes, centrality = "mean")
 standard_error(SM_on_PA_day_bayes)
 
 
+SM_on_PA_day  <- lmer(SM_Pos_p ~ sum_sm_p_lag + sum_sm_p_c + day_in_study + (1 | pid), data = day) # frequentist verison to extract coeffs
+
+stdCoef.merMod(SM_on_PA_day) # std coeffs
+
+
+
+
 ## Positive affect & SM checks
 
 PA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Pos_p_lag + SM_Pos_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
 
 model_parameters(PA_on_SM_count_day_bayes, centrality = "mean")
 standard_error(PA_on_SM_count_day_bayes)
+
+PA_on_SM_count_day  <- lmer(count_sm_p ~ SM_Pos_p_lag + SM_Pos_p_c + day_in_study + (1 | pid), data = day) # frequentist verison to extract coeffs
+
+stdCoef.merMod(PA_on_SM_count_day) # std coeffs
 
 ## SM Checks --> positive mood
 
@@ -249,7 +289,9 @@ SM_count_on_PA_day_bayes  <- brm(SM_Pos_p ~ count_sm_p_lag + count_sm_p_c + day_
 model_parameters(SM_count_on_PA_day_bayes, centrality = "mean")
 standard_error(SM_count_on_PA_day_bayes)
 
+SM_count_on_PA_day  <- lmer(SM_Pos_p ~ count_sm_p_lag + count_sm_p_c + day_in_study + (1 | pid), data = day) # frequentist verison to extract coeffs
 
+stdCoef.merMod(SM_count_on_PA_day) # std coeffs
 
 
 ```
@@ -268,6 +310,12 @@ NA_on_SM_day_bayes  <- brm(sum_sm_p ~ SM_Neg_p_lag + SM_Neg_p_c + day_in_study +
 model_parameters(NA_on_SM_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_day_bayes)
 
+NA_on_SM_day <- lmer(sum_sm_p ~ SM_Neg_p_lag + SM_Neg_p_c + day_in_study + (1 | pid), data = day) # frequentist to get coefficients
+
+stdCoef.merMod(NA_on_SM_day)
+
+
+
 ## Minutes of SM --> NA
 
 SM_on_NA_day_bayes  <- brm(SM_Neg_p ~ sum_sm_p_lag + sum_sm_p_c + day_in_study + (1 | pid), prior = prior1, data = day)
@@ -276,6 +324,9 @@ model_parameters(SM_on_NA_day_bayes, centrality = "mean")
 standard_error(SM_on_NA_day_bayes)
 
 
+SM_on_NA_day <- lmer(SM_Neg_p ~ sum_sm_p_lag + sum_sm_p_c + day_in_study + (1 | pid), data = day) # frequentist to get coefficients
+
+stdCoef.merMod(SM_on_NA_day)
 
 
 ## Negative affect & SM checks
@@ -285,6 +336,9 @@ NA_on_SM_count_day_bayes  <- brm(count_sm_p ~ SM_Neg_p_lag + SM_Neg_p_c + day_in
 model_parameters(NA_on_SM_count_day_bayes, centrality = "mean")
 standard_error(NA_on_SM_count_day_bayes)
 
+NA_on_SM_count_day <- lmer(count_sm_p ~ SM_Neg_p_lag + SM_Neg_p_c + day_in_study + (1 | pid), data = day) # frequentist to get coefficients
+
+stdCoef.merMod(NA_on_SM_count_day)
 
 
 ## SM Checks --> NA
@@ -293,6 +347,10 @@ SM_count_on_NA_day_bayes  <- brm(SM_Neg_p ~ count_sm_p_lag + count_sm_p_c + day_
 
 model_parameters(SM_count_on_NA_day_bayes, centrality = "mean")
 standard_error(SM_count_on_NA_day_bayes)
+
+SM_count_on_NA_day <- lmer(SM_Neg_p ~ count_sm_p_lag + count_sm_p_c + day_in_study + (1 | pid), data = day) # frequentist to get coefficients
+
+stdCoef.merMod(SM_count_on_NA_day)
 
 
 

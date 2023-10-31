@@ -149,6 +149,21 @@ model4 <- lmer(NAf_pm_p ~ count_sm_p + NAf_am_p + count_sm_p_c + day_in_study + 
 anova(model3, model4)
 
 
+
+## write function to extract standardized coefficients
+stdCoef.merMod <- function(object) {
+  sdy <- sd(getME(object,"y"))
+  sdx <- apply(getME(object,"X"), 2, sd)
+  sc <- fixef(object)*sdx/sdy
+  se.fixef <- coef(summary(object))[,"Std. Error"]
+  se <- se.fixef*sdx/sdy
+  return(data.frame(stdcoef=sc, stdse=se))
+}
+
+
+stdCoef.merMod(model1)
+stdCoef.merMod(model3)
+
 ###################models####################################
 
 ## Negative mood - sumduration
@@ -187,6 +202,11 @@ model4 <- lmer(count_sm_p ~ SM_Pos_p + SM_Pos_p_c + day_in_study + (1 + SM_Pos_p
 
 anova(model3, model4)
 
+########## standardized coefficients
+
+stdCoef.merMod(model1)
+stdCoef.merMod(model3)
+
 #########################models #######################################################
 
 ## Positive affect & minutes of SM
@@ -223,6 +243,12 @@ model3 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 | pid), da
 model4 <- lmer(count_sm_p ~ SM_Neg_p + SM_Neg_p_c + day_in_study + (1 + SM_Neg_p | pid), data = day)
 
 anova(model3, model4)
+
+
+########## standardized coefficients
+
+stdCoef.merMod(model1)
+stdCoef.merMod(model3)
 
 ##################################################################
 
