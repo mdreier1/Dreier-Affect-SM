@@ -1,4 +1,4 @@
-# Dreier-mood-SM
+# Dreier-Affect-SM
 
 + This code cleans the Rutgers Hamilton Lab SMASH study data to collapse oberservations onto the day-level and conducts Bayesian multilevel models to explore within-person associations between social media use and mood (both on and off social media)
 + Sample = 19 adolescents; Mage = 15.8(1.1)
